@@ -1,0 +1,2794 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TypeScript Coding Cards — Moje Notatki</title>
+    <style>
+      body {
+        background: #1a1a2e;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        padding: 40px;
+        justify-content: center;
+        font-family: "Segoe UI", sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================================ -->
+    <!-- CARD 01: IMPLICIT ANY — let userName          -->
+    <!-- ============================================ -->
+    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color: #0f0c29" />
+          <stop offset="50%" style="stop-color: #302b63" />
+          <stop offset="100%" style="stop-color: #24243e" />
+        </linearGradient>
+        <linearGradient id="accent1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: #00d2ff" />
+          <stop offset="100%" style="stop-color: #3a7bd5" />
+        </linearGradient>
+      </defs>
+      <rect width="420" height="620" rx="20" fill="url(#bg1)" />
+      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent1)" />
+
+      <text
+        x="30"
+        y="50"
+        fill="#00d2ff"
+        font-size="12"
+        font-family="monospace"
+        font-weight="bold"
+        letter-spacing="3"
+      >
+        📂 TYPESCRIPT BASICS
+      </text>
+      <line
+        x1="30"
+        y1="65"
+        x2="390"
+        y2="65"
+        stroke="#ffffff15"
+        stroke-width="1"
+      />
+
+      <text
+        x="30"
+        y="100"
+        fill="#ffffff"
+        font-size="24"
+        font-family="'Segoe UI',sans-serif"
+        font-weight="bold"
+      >
+        Implicit Any
+      </text>
+
+      <text
+        x="30"
+        y="132"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Zmienna bez typu i wartości początkowej
+      </text>
+      <text
+        x="30"
+        y="152"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        automatycznie otrzymuje typ any (niejawnie).
+      </text>
+      <text
+        x="30"
+        y="172"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Flaga noImplicitAny w tsconfig.json
+      </text>
+      <text
+        x="30"
+        y="192"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        blokuje to zachowanie — rekomendowane!
+      </text>
+
+      <rect
+        x="20"
+        y="215"
+        width="380"
+        height="290"
+        rx="12"
+        fill="#0a0a1a"
+        stroke="#ffffff10"
+        stroke-width="1"
+      />
+
+      <text
+        x="40"
+        y="248"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // ❌ Źle — implicit any
+      </text>
+      <text
+        x="40"
+        y="273"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">userName</tspan>
+        ;
+      </text>
+      <text
+        x="40"
+        y="298"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        userName =
+        <tspan fill="#ce9178">"Alice"</tspan>
+        ;
+      </text>
+      <text
+        x="40"
+        y="323"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        userName =
+        <tspan fill="#b5cea8">42</tspan>
+        ;
+      </text>
+      <text
+        x="40"
+        y="348"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // TS nie zgłosi błędu! ⚠️
+      </text>
+
+      <text
+        x="40"
+        y="388"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // ✅ Dobrze — jawny typ
+      </text>
+      <text
+        x="40"
+        y="413"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">userName</tspan>
+        :
+        <tspan fill="#4ec9b0">string</tspan>
+        ;
+      </text>
+      <text
+        x="40"
+        y="438"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        userName =
+        <tspan fill="#ce9178">"Alice"</tspan>
+        ;
+        <tspan fill="#6a9955">// ✅</tspan>
+      </text>
+      <text
+        x="40"
+        y="463"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // userName = 42; // ❌ BŁĄD
+      </text>
+
+      <rect
+        x="20"
+        y="535"
+        width="380"
+        height="55"
+        rx="10"
+        fill="#00d2ff15"
+        stroke="#00d2ff30"
+        stroke-width="1"
+      />
+      <text
+        x="40"
+        y="558"
+        fill="#00d2ff"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        💡 Zawsze deklaruj typy jawnie.
+      </text>
+      <text
+        x="40"
+        y="578"
+        fill="#00d2ff"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Włącz noImplicitAny w tsconfig.json
+      </text>
+
+      <text
+        x="350"
+        y="612"
+        fill="#ffffff20"
+        font-size="11"
+        font-family="monospace"
+      >
+        01 / 11
+      </text>
+    </svg>
+
+    <!-- ============================================ -->
+    <!-- CARD 02: TYP ANY — let age: any              -->
+    <!-- ============================================ -->
+    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color: #1a0a0a" />
+          <stop offset="50%" style="stop-color: #4a1942" />
+          <stop offset="100%" style="stop-color: #2d1b3d" />
+        </linearGradient>
+        <linearGradient id="accent2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: #ff416c" />
+          <stop offset="100%" style="stop-color: #ff4b2b" />
+        </linearGradient>
+      </defs>
+      <rect width="420" height="620" rx="20" fill="url(#bg2)" />
+      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent2)" />
+
+      <text
+        x="30"
+        y="50"
+        fill="#ff416c"
+        font-size="12"
+        font-family="monospace"
+        font-weight="bold"
+        letter-spacing="3"
+      >
+        ⚠️ TYPESCRIPT BASICS
+      </text>
+      <line
+        x1="30"
+        y1="65"
+        x2="390"
+        y2="65"
+        stroke="#ffffff15"
+        stroke-width="1"
+      />
+
+      <text
+        x="30"
+        y="100"
+        fill="#ffffff"
+        font-size="24"
+        font-family="'Segoe UI',sans-serif"
+        font-weight="bold"
+      >
+        Typ Any
+      </text>
+
+      <text
+        x="30"
+        y="132"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Wyłącza sprawdzanie typów dla zmiennej.
+      </text>
+      <text
+        x="30"
+        y="152"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        TS przestaje pilnować — tracimy cały sens TS.
+      </text>
+      <text
+        x="30"
+        y="172"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Używaj TYLKO tymczasowo (np. migracja z JS).
+      </text>
+      <text
+        x="30"
+        y="192"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Lepsza alternatywa: unknown.
+      </text>
+
+      <rect
+        x="20"
+        y="215"
+        width="380"
+        height="290"
+        rx="12"
+        fill="#0a0a1a"
+        stroke="#ffffff10"
+        stroke-width="1"
+      />
+
+      <text
+        x="40"
+        y="248"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">age</tspan>
+        :
+        <tspan fill="#ff416c">any</tspan>
+        =
+        <tspan fill="#b5cea8">25</tspan>
+        ;
+      </text>
+      <text
+        x="40"
+        y="278"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        age =
+        <tspan fill="#ce9178">"30"</tspan>
+        ;
+        <tspan fill="#6a9955">// ✅ brak błędu</tspan>
+      </text>
+      <text
+        x="40"
+        y="303"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        age =
+        <tspan fill="#569cd6">true</tspan>
+        ;
+        <tspan fill="#6a9955">// ✅ brak błędu</tspan>
+      </text>
+      <text
+        x="40"
+        y="333"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        age.foo.bar;
+      </text>
+      <text
+        x="40"
+        y="358"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // ✅ TS OK, ale CRASH w runtime!
+      </text>
+
+      <text
+        x="40"
+        y="398"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Bezpieczna alternatywa:
+      </text>
+      <text
+        x="40"
+        y="423"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">val</tspan>
+        :
+        <tspan fill="#38ef7d">unknown</tspan>
+        =
+        <tspan fill="#b5cea8">25</tspan>
+        ;
+      </text>
+      <text
+        x="40"
+        y="448"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // val.toFixed() ❌ — musisz sprawdzić
+      </text>
+      <text
+        x="40"
+        y="473"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // typeof val === "number" → ✅
+      </text>
+
+      <rect
+        x="20"
+        y="535"
+        width="380"
+        height="55"
+        rx="10"
+        fill="#ff416c15"
+        stroke="#ff416c30"
+        stroke-width="1"
+      />
+      <text
+        x="40"
+        y="558"
+        fill="#ff416c"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        ⚠️ any = ucieczka od systemu typów.
+      </text>
+      <text
+        x="40"
+        y="578"
+        fill="#ff416c"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        💡 Użyj unknown — wymusza sprawdzenie typu
+      </text>
+
+      <text
+        x="350"
+        y="612"
+        fill="#ffffff20"
+        font-size="11"
+        font-family="monospace"
+      >
+        02 / 11
+      </text>
+    </svg>
+
+    <!-- ============================================ -->
+    <!-- CARD 03: UNION TYPES — let agePerson          -->
+    <!-- ============================================ -->
+    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color: #1a0a28" />
+          <stop offset="50%" style="stop-color: #3b1f6e" />
+          <stop offset="100%" style="stop-color: #261447" />
+        </linearGradient>
+        <linearGradient id="accent3" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: #a855f7" />
+          <stop offset="100%" style="stop-color: #6366f1" />
+        </linearGradient>
+      </defs>
+      <rect width="420" height="620" rx="20" fill="url(#bg3)" />
+      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent3)" />
+
+      <text
+        x="30"
+        y="50"
+        fill="#a855f7"
+        font-size="12"
+        font-family="monospace"
+        font-weight="bold"
+        letter-spacing="3"
+      >
+        📂 TYPESCRIPT TYPES
+      </text>
+      <line
+        x1="30"
+        y1="65"
+        x2="390"
+        y2="65"
+        stroke="#ffffff15"
+        stroke-width="1"
+      />
+
+      <text
+        x="30"
+        y="100"
+        fill="#ffffff"
+        font-size="24"
+        font-family="'Segoe UI',sans-serif"
+        font-weight="bold"
+      >
+        Union Types
+      </text>
+
+      <text
+        x="30"
+        y="132"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Zmienna może przyjmować JEDEN
+      </text>
+      <text
+        x="30"
+        y="152"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        z wymienionych typów. Operator | oznacza "lub".
+      </text>
+      <text
+        x="30"
+        y="172"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Daje elastyczność z zachowaniem
+      </text>
+      <text
+        x="30"
+        y="192"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        bezpieczeństwa typów.
+      </text>
+
+      <rect
+        x="20"
+        y="215"
+        width="380"
+        height="290"
+        rx="12"
+        fill="#0a0a1a"
+        stroke="#ffffff10"
+        stroke-width="1"
+      />
+
+      <text
+        x="40"
+        y="248"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">agePerson</tspan>
+        :
+        <tspan fill="#4ec9b0">number</tspan>
+        |
+        <tspan fill="#4ec9b0">string</tspan>
+      </text>
+      <text
+        x="40"
+        y="273"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        =
+        <tspan fill="#ce9178">"25"</tspan>
+        ;
+      </text>
+      <text
+        x="40"
+        y="303"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        agePerson =
+        <tspan fill="#b5cea8">30</tspan>
+        ;
+        <tspan fill="#6a9955">// ✅ number</tspan>
+      </text>
+      <text
+        x="40"
+        y="328"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // agePerson = true; // ❌ boolean
+      </text>
+
+      <text
+        x="40"
+        y="368"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Wymaga type narrowing:
+      </text>
+      <text
+        x="40"
+        y="393"
+        fill="#c586c0"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        if (
+        <tspan fill="#569cd6">typeof</tspan>
+        <tspan fill="#9cdcfe">agePerson</tspan>
+        ===
+        <tspan fill="#ce9178">"number"</tspan>
+        ){
+      </text>
+      <text
+        x="40"
+        y="418"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        agePerson.toFixed(
+        <tspan fill="#b5cea8">2</tspan>
+        );
+        <tspan fill="#6a9955">// ✅</tspan>
+      </text>
+      <text
+        x="40"
+        y="443"
+        fill="#c586c0"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        }
+        <tspan fill="#569cd6">else</tspan>
+        {
+      </text>
+      <text
+        x="40"
+        y="468"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        agePerson.toUpperCase();
+        <tspan fill="#6a9955">// ✅</tspan>
+      </text>
+      <text
+        x="40"
+        y="493"
+        fill="#c586c0"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        }
+      </text>
+
+      <rect
+        x="20"
+        y="535"
+        width="380"
+        height="55"
+        rx="10"
+        fill="#a855f715"
+        stroke="#a855f730"
+        stroke-width="1"
+      />
+      <text
+        x="40"
+        y="558"
+        fill="#a855f7"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        💡 Operator | daje elastyczność
+      </text>
+      <text
+        x="40"
+        y="578"
+        fill="#a855f7"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        z bezpieczeństwem typów
+      </text>
+
+      <text
+        x="350"
+        y="612"
+        fill="#ffffff20"
+        font-size="11"
+        font-family="monospace"
+      >
+        03 / 11
+      </text>
+    </svg>
+
+    <!-- ============================================ -->
+    <!-- CARD 04: TABLICE T[] — let hobbies            -->
+    <!-- ============================================ -->
+    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color: #0a2818" />
+          <stop offset="50%" style="stop-color: #1a4a2e" />
+          <stop offset="100%" style="stop-color: #0d3720" />
+        </linearGradient>
+        <linearGradient id="accent4" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: #f7971e" />
+          <stop offset="100%" style="stop-color: #ffd200" />
+        </linearGradient>
+      </defs>
+      <rect width="420" height="620" rx="20" fill="url(#bg4)" />
+      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent4)" />
+
+      <text
+        x="30"
+        y="50"
+        fill="#ffd200"
+        font-size="12"
+        font-family="monospace"
+        font-weight="bold"
+        letter-spacing="3"
+      >
+        📂 ARRAYS
+      </text>
+      <line
+        x1="30"
+        y1="65"
+        x2="390"
+        y2="65"
+        stroke="#ffffff15"
+        stroke-width="1"
+      />
+
+      <text
+        x="30"
+        y="100"
+        fill="#ffffff"
+        font-size="24"
+        font-family="'Segoe UI',sans-serif"
+        font-weight="bold"
+      >
+        Tablice — składnia T[]
+      </text>
+
+      <text
+        x="30"
+        y="132"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Typowanie tablicy: typ[] — elementy
+      </text>
+      <text
+        x="30"
+        y="152"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        tylko tego jednego typu.
+      </text>
+      <text
+        x="30"
+        y="172"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Przy union types nawiasy () są kluczowe —
+      </text>
+      <text
+        x="30"
+        y="192"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        zmieniają znaczenie typu!
+      </text>
+
+      <rect
+        x="20"
+        y="215"
+        width="380"
+        height="290"
+        rx="12"
+        fill="#0a0a1a"
+        stroke="#ffffff10"
+        stroke-width="1"
+      />
+
+      <text
+        x="40"
+        y="248"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Tablica TYLKO stringów:
+      </text>
+      <text
+        x="40"
+        y="273"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">hobbies</tspan>
+        :
+        <tspan fill="#4ec9b0">string</tspan>
+        [];
+      </text>
+      <text
+        x="40"
+        y="298"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        hobbies = [
+        <tspan fill="#ce9178">"Sports"</tspan>
+        ,
+        <tspan fill="#ce9178">"Cooking"</tspan>
+        ];
+      </text>
+      <text
+        x="40"
+        y="323"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // hobbies = ["A", 5]; ❌ 5 ≠ string
+      </text>
+
+      <text
+        x="40"
+        y="363"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Tablica mieszana (string LUB number):
+      </text>
+      <text
+        x="40"
+        y="388"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">hobbies1</tspan>
+        : (
+        <tspan fill="#4ec9b0">string</tspan>
+        |
+        <tspan fill="#4ec9b0">number</tspan>
+        )[];
+      </text>
+      <text
+        x="40"
+        y="413"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // ["A", 1, "B", 2] ✅
+      </text>
+
+      <text
+        x="40"
+        y="453"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // ⚠️ BEZ nawiasów = co innego!
+      </text>
+      <text
+        x="40"
+        y="478"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // string | number[]
+      </text>
+      <text
+        x="40"
+        y="493"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // = string LUB tablica numberów
+      </text>
+
+      <rect
+        x="20"
+        y="535"
+        width="380"
+        height="55"
+        rx="10"
+        fill="#ffd20015"
+        stroke="#ffd20030"
+        stroke-width="1"
+      />
+      <text
+        x="40"
+        y="558"
+        fill="#ffd200"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        💡 (string|number)[] ≠ string|number[]
+      </text>
+      <text
+        x="40"
+        y="578"
+        fill="#ffd200"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Nawiasy zmieniają znaczenie!
+      </text>
+
+      <text
+        x="350"
+        y="612"
+        fill="#ffffff20"
+        font-size="11"
+        font-family="monospace"
+      >
+        04 / 11
+      </text>
+    </svg>
+
+    <!-- ============================================ -->
+    <!-- CARD 05: ARRAY<T> — let users2                -->
+    <!-- ============================================ -->
+    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg5" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color: #0a1628" />
+          <stop offset="50%" style="stop-color: #1a3a5c" />
+          <stop offset="100%" style="stop-color: #0d2137" />
+        </linearGradient>
+        <linearGradient id="accent5" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: #11998e" />
+          <stop offset="100%" style="stop-color: #38ef7d" />
+        </linearGradient>
+      </defs>
+      <rect width="420" height="620" rx="20" fill="url(#bg5)" />
+      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent5)" />
+
+      <text
+        x="30"
+        y="50"
+        fill="#38ef7d"
+        font-size="12"
+        font-family="monospace"
+        font-weight="bold"
+        letter-spacing="3"
+      >
+        📂 ARRAYS
+      </text>
+      <line
+        x1="30"
+        y1="65"
+        x2="390"
+        y2="65"
+        stroke="#ffffff15"
+        stroke-width="1"
+      />
+
+      <text
+        x="30"
+        y="100"
+        fill="#ffffff"
+        font-size="24"
+        font-family="'Segoe UI',sans-serif"
+        font-weight="bold"
+      >
+        Tablica — Array&lt;T&gt;
+      </text>
+
+      <text
+        x="30"
+        y="132"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Array&lt;T&gt; to generyczna (alternatywna)
+      </text>
+      <text
+        x="30"
+        y="152"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        składnia dla T[]. Obie formy są RÓWNOWAŻNE.
+      </text>
+      <text
+        x="30"
+        y="172"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Lepsza czytelność przy złożonych typach
+      </text>
+      <text
+        x="30"
+        y="192"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        — nie trzeba pamiętać o nawiasach.
+      </text>
+
+      <rect
+        x="20"
+        y="215"
+        width="380"
+        height="290"
+        rx="12"
+        fill="#0a0a1a"
+        stroke="#ffffff10"
+        stroke-width="1"
+      />
+
+      <text
+        x="40"
+        y="248"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Twój przykład — generyczna składnia:
+      </text>
+      <text
+        x="40"
+        y="273"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">users2</tspan>
+        :
+      </text>
+      <text
+        x="40"
+        y="298"
+        fill="#4ec9b0"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        Array&lt;
+        <tspan fill="#4ec9b0">string</tspan>
+        |
+        <tspan fill="#4ec9b0">number</tspan>
+        &gt; = [];
+      </text>
+
+      <text
+        x="40"
+        y="338"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // RÓWNOWAŻNE zapisy:
+      </text>
+      <text
+        x="40"
+        y="363"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">a</tspan>
+        :
+        <tspan fill="#4ec9b0">Array</tspan>
+        &lt;
+        <tspan fill="#4ec9b0">string</tspan>
+        &gt; = [
+        <tspan fill="#ce9178">"hi"</tspan>
+        ];
+      </text>
+      <text
+        x="40"
+        y="388"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">b</tspan>
+        :
+        <tspan fill="#4ec9b0">string</tspan>
+        [] = [
+        <tspan fill="#ce9178">"hi"</tspan>
+        ];
+      </text>
+      <text
+        x="40"
+        y="413"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // a i b to ten sam typ!
+      </text>
+
+      <text
+        x="40"
+        y="453"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Generyczna czytelniejsza przy union:
+      </text>
+      <text
+        x="40"
+        y="478"
+        fill="#4ec9b0"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        Array&lt;string | number&gt;
+        <tspan fill="#6a9955">// ✅ jasne</tspan>
+      </text>
+      <text
+        x="40"
+        y="493"
+        fill="#4ec9b0"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        (string | number)[]
+        <tspan fill="#6a9955">// ✅ też OK</tspan>
+      </text>
+
+      <rect
+        x="20"
+        y="535"
+        width="380"
+        height="55"
+        rx="10"
+        fill="#38ef7d15"
+        stroke="#38ef7d30"
+        stroke-width="1"
+      />
+      <text
+        x="40"
+        y="558"
+        fill="#38ef7d"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        💡 Array&lt;T&gt; === T[]
+      </text>
+      <text
+        x="40"
+        y="578"
+        fill="#38ef7d"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Wybierz jedną konwencję i trzymaj się jej
+      </text>
+
+      <text
+        x="350"
+        y="612"
+        fill="#ffffff20"
+        font-size="11"
+        font-family="monospace"
+      >
+        05 / 11
+      </text>
+    </svg>
+
+    <!-- ============================================ -->
+    <!-- CARD 06: TUPLE — let possibleResult           -->
+    <!-- ============================================ -->
+    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg6" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color: #1a1a2e" />
+          <stop offset="50%" style="stop-color: #16213e" />
+          <stop offset="100%" style="stop-color: #0f3460" />
+        </linearGradient>
+        <linearGradient id="accent6" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: #e94560" />
+          <stop offset="100%" style="stop-color: #f97316" />
+        </linearGradient>
+      </defs>
+      <rect width="420" height="620" rx="20" fill="url(#bg6)" />
+      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent6)" />
+
+      <text
+        x="30"
+        y="50"
+        fill="#e94560"
+        font-size="12"
+        font-family="monospace"
+        font-weight="bold"
+        letter-spacing="3"
+      >
+        📂 ARRAYS
+      </text>
+      <line
+        x1="30"
+        y1="65"
+        x2="390"
+        y2="65"
+        stroke="#ffffff15"
+        stroke-width="1"
+      />
+
+      <text
+        x="30"
+        y="100"
+        fill="#ffffff"
+        font-size="24"
+        font-family="'Segoe UI',sans-serif"
+        font-weight="bold"
+      >
+        Tuple (Krotka)
+      </text>
+
+      <text
+        x="30"
+        y="132"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Tablica o STAŁEJ długości i OKREŚLONYCH
+      </text>
+      <text
+        x="30"
+        y="152"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        typach na każdej pozycji.
+      </text>
+      <text
+        x="30"
+        y="172"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Kolejność typów MA znaczenie.
+      </text>
+      <text
+        x="30"
+        y="192"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        TS zna typ na każdej pozycji.
+      </text>
+
+      <rect
+        x="20"
+        y="215"
+        width="380"
+        height="290"
+        rx="12"
+        fill="#0a0a1a"
+        stroke="#ffffff10"
+        stroke-width="1"
+      />
+
+      <text
+        x="40"
+        y="248"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Twój przykład:
+      </text>
+      <text
+        x="40"
+        y="273"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">possibleResult</tspan>
+        :
+      </text>
+      <text
+        x="40"
+        y="298"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        [
+        <tspan fill="#4ec9b0">number</tspan>
+        ,
+        <tspan fill="#4ec9b0">string</tspan>
+        ]
+      </text>
+      <text
+        x="40"
+        y="323"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        = [
+        <tspan fill="#b5cea8">10</tspan>
+        ,
+        <tspan fill="#ce9178">"Hello"</tspan>
+        ];
+      </text>
+
+      <text
+        x="40"
+        y="363"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // TS zna typ na każdej pozycji:
+      </text>
+      <text
+        x="40"
+        y="388"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        possibleResult[
+        <tspan fill="#b5cea8">0</tspan>
+        ].toFixed();
+      </text>
+      <text
+        x="40"
+        y="408"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        <tspan fill="#6a9955">// ✅ number</tspan>
+      </text>
+      <text
+        x="40"
+        y="433"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        possibleResult[
+        <tspan fill="#b5cea8">1</tspan>
+        ].toUpperCase();
+      </text>
+      <text
+        x="40"
+        y="453"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        <tspan fill="#6a9955">// ✅ string</tspan>
+      </text>
+
+      <text
+        x="40"
+        y="483"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // ⚠️ Znana słabość TS:
+      </text>
+      <text
+        x="40"
+        y="498"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        possibleResult.push(
+        <tspan fill="#b5cea8">99</tspan>
+        );
+        <tspan fill="#6a9955">// TS OK!</tspan>
+      </text>
+
+      <rect
+        x="20"
+        y="535"
+        width="380"
+        height="55"
+        rx="10"
+        fill="#e9456015"
+        stroke="#e9456030"
+        stroke-width="1"
+      />
+      <text
+        x="40"
+        y="558"
+        fill="#e94560"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        ⚠️ push() omija walidację tuple w TS.
+      </text>
+      <text
+        x="40"
+        y="578"
+        fill="#e94560"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        💡 Kolejność i ilość elementów są pilnowane
+      </text>
+
+      <text
+        x="350"
+        y="612"
+        fill="#ffffff20"
+        font-size="11"
+        font-family="monospace"
+      >
+        06 / 11
+      </text>
+    </svg>
+
+    <!-- ============================================ -->
+    <!-- CARD 07: OBIEKT INLINE — let uss              -->
+    <!-- ============================================ -->
+    <svg width="420" height="720" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg7" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color: #1a0a28" />
+          <stop offset="50%" style="stop-color: #2d1b69" />
+          <stop offset="100%" style="stop-color: #1a1145" />
+        </linearGradient>
+        <linearGradient id="accent7" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: #667eea" />
+          <stop offset="100%" style="stop-color: #764ba2" />
+        </linearGradient>
+      </defs>
+      <rect width="420" height="720" rx="20" fill="url(#bg7)" />
+      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent7)" />
+
+      <text
+        x="30"
+        y="50"
+        fill="#667eea"
+        font-size="12"
+        font-family="monospace"
+        font-weight="bold"
+        letter-spacing="3"
+      >
+        📂 OBJECTS
+      </text>
+      <line
+        x1="30"
+        y1="65"
+        x2="390"
+        y2="65"
+        stroke="#ffffff15"
+        stroke-width="1"
+      />
+
+      <text
+        x="30"
+        y="100"
+        fill="#ffffff"
+        font-size="24"
+        font-family="'Segoe UI',sans-serif"
+        font-weight="bold"
+      >
+        Obiekt — typ inline
+      </text>
+
+      <text
+        x="30"
+        y="132"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Kształt obiektu definiujesz bezpośrednio
+      </text>
+      <text
+        x="30"
+        y="152"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        przy zmiennej. Każda właściwość ma typ.
+      </text>
+      <text
+        x="30"
+        y="172"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        "admin" to literal type — TYLKO ta wartość.
+      </text>
+      <text
+        x="30"
+        y="192"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        [1|5] to tuple — jeden element: 1 lub 5.
+      </text>
+
+      <rect
+        x="20"
+        y="215"
+        width="380"
+        height="390"
+        rx="12"
+        fill="#0a0a1a"
+        stroke="#ffffff10"
+        stroke-width="1"
+      />
+
+      <text
+        x="40"
+        y="248"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Twój przykład (poprawione):
+      </text>
+      <text
+        x="40"
+        y="273"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">user</tspan>
+        : {
+      </text>
+      <text
+        x="40"
+        y="298"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        name:
+        <tspan fill="#4ec9b0">string</tspan>
+        ;
+      </text>
+      <text
+        x="40"
+        y="323"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        age:
+        <tspan fill="#4ec9b0">number</tspan>
+        |
+        <tspan fill="#4ec9b0">string</tspan>
+        ;
+      </text>
+      <text
+        x="40"
+        y="348"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        hobbies:
+        <tspan fill="#4ec9b0">string</tspan>
+        [];
+      </text>
+      <text
+        x="40"
+        y="373"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        role: {
+      </text>
+      <text
+        x="40"
+        y="398"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        description:
+        <tspan fill="#ce9178">"admin"</tspan>
+        ;
+      </text>
+      <text
+        x="40"
+        y="418"
+        fill="#6a9955"
+        font-size="12"
+        font-family="'Courier New',monospace"
+      >
+        <tspan fill="#6a9955">// ↑ literal type! Tylko "admin"</tspan>
+      </text>
+      <text
+        x="40"
+        y="443"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        id: [
+        <tspan fill="#b5cea8">1</tspan>
+        |
+        <tspan fill="#b5cea8">5</tspan>
+        ];
+      </text>
+      <text
+        x="40"
+        y="463"
+        fill="#6a9955"
+        font-size="12"
+        font-family="'Courier New',monospace"
+      >
+        <tspan fill="#6a9955">// ↑ tuple: 1 element = 1 lub 5</tspan>
+      </text>
+      <text
+        x="40"
+        y="488"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        };
+      </text>
+      <text
+        x="40"
+        y="513"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        } = {
+      </text>
+      <text
+        x="40"
+        y="538"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        name:
+        <tspan fill="#ce9178">"Marek"</tspan>
+        , age:
+        <tspan fill="#b5cea8">20</tspan>
+        ,
+      </text>
+      <text
+        x="40"
+        y="563"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        hobbies: [
+        <tspan fill="#ce9178">"Sports"</tspan>
+        ,
+        <tspan fill="#ce9178">"Cooking"</tspan>
+        ],
+      </text>
+      <text
+        x="40"
+        y="588"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        role: {description:
+        <tspan fill="#ce9178">"admin"</tspan>
+        ,id:[
+        <tspan fill="#b5cea8">1</tspan>
+        ]}
+      </text>
+      <text
+        x="40"
+        y="600"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        };
+      </text>
+
+      <rect
+        x="20"
+        y="635"
+        width="380"
+        height="55"
+        rx="10"
+        fill="#667eea15"
+        stroke="#667eea30"
+        stroke-width="1"
+      />
+      <text
+        x="40"
+        y="658"
+        fill="#667eea"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        💡 Przy złożonych obiektach użyj type alias
+      </text>
+      <text
+        x="40"
+        y="678"
+        fill="#667eea"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        ⚠️ rore → role (literówka w oryginale)
+      </text>
+
+      <text
+        x="350"
+        y="712"
+        fill="#ffffff20"
+        font-size="11"
+        font-family="monospace"
+      >
+        07 / 11
+      </text>
+    </svg>
+
+    <!-- ============================================ -->
+    <!-- CARD 08: TYP {} — let val                     -->
+    <!-- ============================================ -->
+    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg8" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color: #0c0c1d" />
+          <stop offset="50%" style="stop-color: #2a1a3e" />
+          <stop offset="100%" style="stop-color: #1a1030" />
+        </linearGradient>
+        <linearGradient id="accent8" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: #ec4899" />
+          <stop offset="100%" style="stop-color: #f43f5e" />
+        </linearGradient>
+      </defs>
+      <rect width="420" height="620" rx="20" fill="url(#bg8)" />
+      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent8)" />
+
+      <text
+        x="30"
+        y="50"
+        fill="#ec4899"
+        font-size="12"
+        font-family="monospace"
+        font-weight="bold"
+        letter-spacing="3"
+      >
+        ⚠️ OBJECTS
+      </text>
+      <line
+        x1="30"
+        y1="65"
+        x2="390"
+        y2="65"
+        stroke="#ffffff15"
+        stroke-width="1"
+      />
+
+      <text
+        x="30"
+        y="100"
+        fill="#ffffff"
+        font-size="24"
+        font-family="'Segoe UI',sans-serif"
+        font-weight="bold"
+      >
+        Typ {}
+      </text>
+
+      <text
+        x="30"
+        y="132"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        To NIE jest "pusty obiekt"! Częste
+      </text>
+      <text
+        x="30"
+        y="152"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        nieporozumienie. Oznacza: dowolna wartość
+      </text>
+      <text
+        x="30"
+        y="172"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        OPRÓCZ null i undefined.
+      </text>
+      <text
+        x="30"
+        y="192"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Akceptuje stringi, numbery, boolean, tablice!
+      </text>
+
+      <rect
+        x="20"
+        y="215"
+        width="380"
+        height="290"
+        rx="12"
+        fill="#0a0a1a"
+        stroke="#ffffff10"
+        stroke-width="1"
+      />
+
+      <text
+        x="40"
+        y="248"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Twój przykład:
+      </text>
+      <text
+        x="40"
+        y="273"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">val</tspan>
+        : {} =
+        <tspan fill="#ce9178">"some text"</tspan>
+        ;
+        <tspan fill="#6a9955">// ✅</tspan>
+      </text>
+
+      <text
+        x="40"
+        y="308"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Wszystko to przejdzie:
+      </text>
+      <text
+        x="40"
+        y="333"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        val =
+        <tspan fill="#b5cea8">42</tspan>
+        ;
+        <tspan fill="#6a9955">// ✅ number</tspan>
+      </text>
+      <text
+        x="40"
+        y="358"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        val =
+        <tspan fill="#569cd6">true</tspan>
+        ;
+        <tspan fill="#6a9955">// ✅ boolean</tspan>
+      </text>
+      <text
+        x="40"
+        y="383"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        val = [
+        <tspan fill="#b5cea8">1</tspan>
+        ,
+        <tspan fill="#b5cea8">2</tspan>
+        ];
+        <tspan fill="#6a9955">// ✅ array</tspan>
+      </text>
+      <text
+        x="40"
+        y="408"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        val = {name:
+        <tspan fill="#ce9178">"A"</tspan>
+        };
+        <tspan fill="#6a9955">// ✅ obiekt</tspan>
+      </text>
+
+      <text
+        x="40"
+        y="443"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // TYLKO te nie przejdą:
+      </text>
+      <text
+        x="40"
+        y="468"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // val = null; ❌
+      </text>
+      <text
+        x="40"
+        y="493"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // val = undefined; ❌
+      </text>
+
+      <rect
+        x="20"
+        y="535"
+        width="380"
+        height="55"
+        rx="10"
+        fill="#ec489915"
+        stroke="#ec489930"
+        stroke-width="1"
+      />
+      <text
+        x="40"
+        y="558"
+        fill="#ec4899"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        💡 unknown → {} → object
+      </text>
+      <text
+        x="40"
+        y="578"
+        fill="#ec4899"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        (od najszerszego do najwęższego)
+      </text>
+
+      <text
+        x="350"
+        y="612"
+        fill="#ffffff20"
+        font-size="11"
+        font-family="monospace"
+      >
+        08 / 11
+      </text>
+    </svg>
+
+    <!-- ============================================ -->
+    <!-- CARD 09: RECORD — let data                    -->
+    <!-- ============================================ -->
+    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg9" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color: #0c0c1d" />
+          <stop offset="50%" style="stop-color: #1e3a5f" />
+          <stop offset="100%" style="stop-color: #162447" />
+        </linearGradient>
+        <linearGradient id="accent9" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: #0ea5e9" />
+          <stop offset="100%" style="stop-color: #06b6d4" />
+        </linearGradient>
+      </defs>
+      <rect width="420" height="620" rx="20" fill="url(#bg9)" />
+      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent9)" />
+
+      <text
+        x="30"
+        y="50"
+        fill="#06b6d4"
+        font-size="12"
+        font-family="monospace"
+        font-weight="bold"
+        letter-spacing="3"
+      >
+        📂 OBJECTS
+      </text>
+      <line
+        x1="30"
+        y1="65"
+        x2="390"
+        y2="65"
+        stroke="#ffffff15"
+        stroke-width="1"
+      />
+
+      <text
+        x="30"
+        y="100"
+        fill="#ffffff"
+        font-size="24"
+        font-family="'Segoe UI',sans-serif"
+        font-weight="bold"
+      >
+        Record&lt;K, V&gt;
+      </text>
+
+      <text
+        x="30"
+        y="132"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Definiuje typ obiektu, gdzie:
+      </text>
+      <text
+        x="30"
+        y="152"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        K (pierwszy parametr) = typ kluczy
+      </text>
+      <text
+        x="30"
+        y="172"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        V (drugi parametr) = typ wartości.
+      </text>
+      <text
+        x="30"
+        y="192"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Z union w kluczach wymusza WSZYSTKIE.
+      </text>
+
+      <rect
+        x="20"
+        y="215"
+        width="380"
+        height="290"
+        rx="12"
+        fill="#0a0a1a"
+        stroke="#ffffff10"
+        stroke-width="1"
+      />
+
+      <text
+        x="40"
+        y="248"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Twój przykład:
+      </text>
+      <text
+        x="40"
+        y="273"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">data</tspan>
+        :
+      </text>
+      <text
+        x="40"
+        y="298"
+        fill="#4ec9b0"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        Record&lt;
+        <tspan fill="#4ec9b0">string</tspan>
+        ,
+        <tspan fill="#4ec9b0">number</tspan>
+        |
+        <tspan fill="#4ec9b0">string</tspan>
+        &gt;
+      </text>
+      <text
+        x="40"
+        y="323"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        = { name:
+        <tspan fill="#ce9178">"Marek"</tspan>
+        , age:
+        <tspan fill="#b5cea8">20</tspan>
+        };
+      </text>
+
+      <text
+        x="40"
+        y="363"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Z union w kluczach — WYMUSZA:
+      </text>
+      <text
+        x="40"
+        y="388"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        type
+        <tspan fill="#4ec9b0">Fruit</tspan>
+        =
+        <tspan fill="#ce9178">"apple"</tspan>
+        |
+        <tspan fill="#ce9178">"banana"</tspan>
+        ;
+      </text>
+      <text
+        x="40"
+        y="418"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">p</tspan>
+        :
+        <tspan fill="#4ec9b0">Record</tspan>
+        &lt;
+        <tspan fill="#4ec9b0">Fruit</tspan>
+        ,
+        <tspan fill="#4ec9b0">number</tspan>
+        &gt; = {
+      </text>
+      <text
+        x="40"
+        y="443"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        apple:
+        <tspan fill="#b5cea8">2.5</tspan>
+        ,
+      </text>
+      <text
+        x="40"
+        y="468"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        banana:
+        <tspan fill="#b5cea8">1.5</tspan>
+        <tspan fill="#6a9955">// oba WYMAGANE!</tspan>
+      </text>
+      <text
+        x="40"
+        y="493"
+        fill="#c586c0"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        };
+      </text>
+
+      <rect
+        x="20"
+        y="535"
+        width="380"
+        height="55"
+        rx="10"
+        fill="#06b6d415"
+        stroke="#06b6d430"
+        stroke-width="1"
+      />
+      <text
+        x="40"
+        y="558"
+        fill="#06b6d4"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        💡 Record&lt;K,V&gt; === { [key: K]: V }
+      </text>
+      <text
+        x="40"
+        y="578"
+        fill="#06b6d4"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Klucze mogą być string, number lub union
+      </text>
+
+      <text
+        x="350"
+        y="612"
+        fill="#ffffff20"
+        font-size="11"
+        font-family="monospace"
+      >
+        09 / 11
+      </text>
+    </svg>
+
+    <!-- ============================================ -->
+    <!-- CARD 10: ENUM — enum Role                     -->
+    <!-- ============================================ -->
+    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg10" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color: #1a0f0a" />
+          <stop offset="50%" style="stop-color: #5c2e0e" />
+          <stop offset="100%" style="stop-color: #3d1f0a" />
+        </linearGradient>
+        <linearGradient id="accent10" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: #f59e0b" />
+          <stop offset="100%" style="stop-color: #ef4444" />
+        </linearGradient>
+      </defs>
+      <rect width="420" height="620" rx="20" fill="url(#bg10)" />
+      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent10)" />
+
+      <text
+        x="30"
+        y="50"
+        fill="#f59e0b"
+        font-size="12"
+        font-family="monospace"
+        font-weight="bold"
+        letter-spacing="3"
+      >
+        📂 ENUMS
+      </text>
+      <line
+        x1="30"
+        y1="65"
+        x2="390"
+        y2="65"
+        stroke="#ffffff15"
+        stroke-width="1"
+      />
+
+      <text
+        x="30"
+        y="100"
+        fill="#ffffff"
+        font-size="24"
+        font-family="'Segoe UI',sans-serif"
+        font-weight="bold"
+      >
+        Enum (Wyliczenie)
+      </text>
+
+      <text
+        x="30"
+        y="132"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Zbiór nazwanych stałych. Numeric enum:
+      </text>
+      <text
+        x="30"
+        y="152"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        wartości od 0 w górę (domyślnie).
+      </text>
+      <text
+        x="30"
+        y="172"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        SŁABOŚĆ: akceptuje DOWOLNY number!
+      </text>
+      <text
+        x="30"
+        y="192"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        String enum jest bezpieczniejszy.
+      </text>
+
+      <rect
+        x="20"
+        y="215"
+        width="380"
+        height="290"
+        rx="12"
+        fill="#0a0a1a"
+        stroke="#ffffff10"
+        stroke-width="1"
+      />
+
+      <text
+        x="40"
+        y="248"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Twój przykład — numeric enum:
+      </text>
+      <text
+        x="40"
+        y="273"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        enum
+        <tspan fill="#4ec9b0">Role</tspan>
+        {
+      </text>
+      <text
+        x="40"
+        y="298"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        ADMIN,
+        <tspan fill="#6a9955">// 0</tspan>
+      </text>
+      <text
+        x="40"
+        y="323"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        READ_ONLY,
+        <tspan fill="#6a9955">// 1</tspan>
+      </text>
+      <text
+        x="40"
+        y="348"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        AUTHOR,
+        <tspan fill="#6a9955">// 2</tspan>
+      </text>
+      <text
+        x="40"
+        y="373"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        }
+      </text>
+
+      <text
+        x="40"
+        y="408"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">userRole</tspan>
+        :
+        <tspan fill="#4ec9b0">Role</tspan>
+      </text>
+      <text
+        x="40"
+        y="433"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        = Role.ADMIN;
+        <tspan fill="#6a9955">// ✅ = 0</tspan>
+      </text>
+      <text
+        x="40"
+        y="463"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">userRole2</tspan>
+        :
+        <tspan fill="#4ec9b0">Role</tspan>
+      </text>
+      <text
+        x="40"
+        y="488"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        =
+        <tspan fill="#b5cea8">1</tspan>
+        ;
+        <tspan fill="#6a9955">// ✅ READ_ONLY</tspan>
+      </text>
+
+      <rect
+        x="20"
+        y="535"
+        width="380"
+        height="55"
+        rx="10"
+        fill="#f59e0b15"
+        stroke="#f59e0b30"
+        stroke-width="1"
+      />
+      <text
+        x="40"
+        y="558"
+        fill="#f59e0b"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        ⚠️ let r: Role = 999 — TS nie zgłosi błędu!
+      </text>
+      <text
+        x="40"
+        y="578"
+        fill="#f59e0b"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        💡 Preferuj string enum lub literal union
+      </text>
+
+      <text
+        x="350"
+        y="612"
+        fill="#ffffff20"
+        font-size="11"
+        font-family="monospace"
+      >
+        10 / 11
+      </text>
+    </svg>
+
+    <!-- ============================================ -->
+    <!-- CARD 11: LITERAL TYPES — let usRole           -->
+    <!-- ============================================ -->
+    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg11" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color: #0a1a0a" />
+          <stop offset="50%" style="stop-color: #1a4a1a" />
+          <stop offset="100%" style="stop-color: #0d370d" />
+        </linearGradient>
+        <linearGradient id="accent11" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: #22c55e" />
+          <stop offset="100%" style="stop-color: #10b981" />
+        </linearGradient>
+      </defs>
+      <rect width="420" height="620" rx="20" fill="url(#bg11)" />
+      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent11)" />
+
+      <text
+        x="30"
+        y="50"
+        fill="#22c55e"
+        font-size="12"
+        font-family="monospace"
+        font-weight="bold"
+        letter-spacing="3"
+      >
+        📂 TYPESCRIPT TYPES
+      </text>
+      <line
+        x1="30"
+        y1="65"
+        x2="390"
+        y2="65"
+        stroke="#ffffff15"
+        stroke-width="1"
+      />
+
+      <text
+        x="30"
+        y="100"
+        fill="#ffffff"
+        font-size="24"
+        font-family="'Segoe UI',sans-serif"
+        font-weight="bold"
+      >
+        Literal Types
+      </text>
+
+      <text
+        x="30"
+        y="132"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Typ, który akceptuje DOKŁADNIE określone
+      </text>
+      <text
+        x="30"
+        y="152"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        wartości — konkretne stringi, numbery
+      </text>
+      <text
+        x="30"
+        y="172"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        lub booleany. Nie generuje kodu JS.
+      </text>
+      <text
+        x="30"
+        y="192"
+        fill="#a0a0b8"
+        font-size="13"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Lżejszy i preferowany nad enum.
+      </text>
+
+      <rect
+        x="20"
+        y="215"
+        width="380"
+        height="290"
+        rx="12"
+        fill="#0a0a1a"
+        stroke="#ffffff10"
+        stroke-width="1"
+      />
+
+      <text
+        x="40"
+        y="248"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Twój przykład:
+      </text>
+      <text
+        x="40"
+        y="273"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        let
+        <tspan fill="#9cdcfe">usRole</tspan>
+        :
+      </text>
+      <text
+        x="40"
+        y="298"
+        fill="#ce9178"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        "ADMIN" | "READ_ONLY" | "AUTHOR"
+      </text>
+      <text
+        x="40"
+        y="323"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        =
+        <tspan fill="#ce9178">"ADMIN"</tspan>
+        ;
+        <tspan fill="#6a9955">// ✅</tspan>
+      </text>
+
+      <text
+        x="40"
+        y="358"
+        fill="#9cdcfe"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        usRole =
+        <tspan fill="#ce9178">"READ_ONLY"</tspan>
+        ;
+        <tspan fill="#6a9955">// ✅</tspan>
+      </text>
+      <text
+        x="40"
+        y="383"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // usRole = "SUPER"; ❌
+      </text>
+      <text
+        x="40"
+        y="408"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // usRole = 0; ❌
+      </text>
+
+      <text
+        x="40"
+        y="443"
+        fill="#6a9955"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        // Lepiej z type alias:
+      </text>
+      <text
+        x="40"
+        y="468"
+        fill="#569cd6"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        type
+        <tspan fill="#4ec9b0">Role</tspan>
+        =
+      </text>
+      <text
+        x="40"
+        y="493"
+        fill="#ce9178"
+        font-size="13"
+        font-family="'Courier New',monospace"
+      >
+        "ADMIN" | "READ_ONLY" | "AUTHOR";
+      </text>
+
+      <rect
+        x="20"
+        y="535"
+        width="380"
+        height="55"
+        rx="10"
+        fill="#22c55e15"
+        stroke="#22c55e30"
+        stroke-width="1"
+      />
+      <text
+        x="40"
+        y="558"
+        fill="#22c55e"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        💡 Zero kodu JS — lżejszy niż enum.
+      </text>
+      <text
+        x="40"
+        y="578"
+        fill="#22c55e"
+        font-size="12"
+        font-family="'Segoe UI',sans-serif"
+      >
+        Enum → gdy potrzebujesz Object.values()
+      </text>
+
+      <text
+        x="350"
+        y="612"
+        fill="#ffffff20"
+        font-size="11"
+        font-family="monospace"
+      >
+        11 / 11
+      </text>
+    </svg>
+  </body>
+</html>
