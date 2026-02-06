@@ -2,2793 +2,1436 @@
 <html lang="pl">
   <head>
     <meta charset="UTF-8" />
-    <title>TypeScript Coding Cards — Moje Notatki</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Cards Generator</title>
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       body {
-        background: #1a1a2e;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: #0a0a1a;
+        color: #e0e0e0;
+        min-height: 100vh;
+      }
+
+      header {
+        background: linear-gradient(135deg, #1a1a3e, #0f0c29);
+        border-bottom: 2px solid #ffffff10;
+        padding: 20px 40px;
         display: flex;
+        align-items: center;
+        justify-content: space-between;
         flex-wrap: wrap;
-        gap: 30px;
-        padding: 40px;
+        gap: 15px;
+      }
+
+      header h1 {
+        font-size: 24px;
+        background: linear-gradient(90deg, #00d2ff, #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      header .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.15);
+      }
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+        color: white;
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #22c55e, #10b981);
+        color: white;
+      }
+
+      .btn-warning {
+        background: linear-gradient(135deg, #f59e0b, #ef4444);
+        color: white;
+      }
+
+      .btn-purple {
+        background: linear-gradient(135deg, #a855f7, #6366f1);
+        color: white;
+      }
+
+      .btn-dark {
+        background: #1a1a3e;
+        color: #a0a0b8;
+        border: 1px solid #ffffff15;
+      }
+
+      .btn-sm {
+        padding: 6px 14px;
+        font-size: 12px;
+        border-radius: 8px;
+      }
+
+      .btn-danger {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+      }
+
+      .container {
+        display: flex;
+        min-height: calc(100vh - 80px);
+      }
+
+      .sidebar {
+        width: 280px;
+        min-width: 280px;
+        background: #0f0f24;
+        border-right: 1px solid #ffffff10;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .sidebar-header {
+        padding: 20px;
+        border-bottom: 1px solid #ffffff10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .sidebar-header h3 {
+        font-size: 14px;
+        color: #a0a0b8;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .cards-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+      }
+
+      .cards-list::-webkit-scrollbar {
+        width: 6px;
+      }
+      .cards-list::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .cards-list::-webkit-scrollbar-thumb {
+        background: #ffffff20;
+        border-radius: 3px;
+      }
+
+      .card-item {
+        padding: 12px 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 6px;
+        border: 1px solid transparent;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .card-item:hover {
+        background: #1a1a3e;
+      }
+
+      .card-item.active {
+        background: #1a1a3e;
+        border-color: #3a7bd5;
+      }
+
+      .card-item .card-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .card-item .card-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #e0e0e0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .card-item .card-cat {
+        font-size: 11px;
+        color: #666;
+        margin-top: 2px;
+      }
+
+      .card-item .card-num {
+        font-size: 11px;
+        color: #444;
+        font-family: monospace;
+        margin-left: 10px;
+      }
+
+      .card-item .delete-btn {
+        background: none;
+        border: none;
+        color: #444;
+        cursor: pointer;
+        font-size: 14px;
+        padding: 4px;
+        border-radius: 4px;
+        transition: all 0.2s;
+        margin-left: 6px;
+        display: none;
+      }
+
+      .card-item:hover .delete-btn {
+        display: block;
+      }
+      .card-item .delete-btn:hover {
+        color: #ef4444;
+        background: #ef444420;
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+
+      .editor-panel {
+        flex: 1;
+        padding: 30px;
+        overflow-y: auto;
+        max-width: 550px;
+        border-right: 1px solid #ffffff10;
+      }
+
+      .editor-panel::-webkit-scrollbar {
+        width: 6px;
+      }
+      .editor-panel::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .editor-panel::-webkit-scrollbar-thumb {
+        background: #ffffff20;
+        border-radius: 3px;
+      }
+
+      .preview-panel {
+        flex: 1;
+        padding: 30px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #0d0d20;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #a0a0b8;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 12px 16px;
+        background: #1a1a3e;
+        border: 1px solid #ffffff15;
+        border-radius: 10px;
+        color: #e0e0e0;
+        font-size: 14px;
+        font-family: inherit;
+        transition: border-color 0.2s;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: #3a7bd5;
+      }
+
+      .form-group textarea {
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+        line-height: 1.5;
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .form-group textarea.code-input {
+        min-height: 200px;
+        background: #0a0a1a;
+      }
+
+      .form-row {
+        display: flex;
+        gap: 15px;
+      }
+
+      .form-row .form-group {
+        flex: 1;
+      }
+
+      .theme-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 8px;
+      }
+
+      .theme-option {
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.2s;
+        text-align: center;
+      }
+
+      .theme-option:hover {
+        transform: scale(1.05);
+      }
+
+      .theme-option.active {
+        border-color: white;
+        transform: scale(1.05);
+      }
+
+      .theme-option .theme-preview {
+        height: 30px;
+        border-radius: 6px;
+        margin-bottom: 6px;
+      }
+
+      .theme-option .theme-name {
+        font-size: 10px;
+        color: #a0a0b8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 60px 30px;
+        color: #444;
+      }
+
+      .empty-state .icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+      }
+      .empty-state h3 {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 10px;
+      }
+      .empty-state p {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #000000cc;
+        display: none;
+        align-items: center;
         justify-content: center;
-        font-family: "Segoe UI", sans-serif;
+        z-index: 1000;
+      }
+
+      .modal-overlay.show {
+        display: flex;
+      }
+
+      .modal {
+        background: #1a1a3e;
+        border-radius: 16px;
+        padding: 30px;
+        max-width: 600px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        border: 1px solid #ffffff15;
+      }
+
+      .modal h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #e0e0e0;
+      }
+
+      .modal textarea {
+        width: 100%;
+        min-height: 300px;
+        padding: 16px;
+        background: #0a0a1a;
+        border: 1px solid #ffffff15;
+        border-radius: 10px;
+        color: #e0e0e0;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        resize: vertical;
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        justify-content: flex-end;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        padding: 14px 24px;
+        background: #22c55e;
+        color: white;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s;
+        z-index: 2000;
+      }
+
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      @media (max-width: 1100px) {
+        .container {
+          flex-direction: column;
+        }
+        .sidebar {
+          width: 100%;
+          min-width: 100%;
+          max-height: 200px;
+        }
+        .main {
+          flex-direction: column;
+        }
+        .editor-panel {
+          max-width: 100%;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- ============================================ -->
-    <!-- CARD 01: IMPLICIT ANY — let userName          -->
-    <!-- ============================================ -->
-    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color: #0f0c29" />
-          <stop offset="50%" style="stop-color: #302b63" />
-          <stop offset="100%" style="stop-color: #24243e" />
-        </linearGradient>
-        <linearGradient id="accent1" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color: #00d2ff" />
-          <stop offset="100%" style="stop-color: #3a7bd5" />
-        </linearGradient>
-      </defs>
-      <rect width="420" height="620" rx="20" fill="url(#bg1)" />
-      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent1)" />
+    <header>
+      <h1>🃏 Coding Cards Generator</h1>
+      <div class="actions">
+        <button class="btn btn-dark" onclick="exportJSON()">
+          📁 Eksportuj JSON
+        </button>
+        <button class="btn btn-dark" onclick="showImportModal()">
+          📂 Importuj JSON
+        </button>
+        <button class="btn btn-purple" onclick="downloadAllSVG()">
+          ⬇️ Pobierz wszystkie SVG
+        </button>
+        <button class="btn btn-success" onclick="downloadAllPNG()">
+          🖼️ Pobierz wszystkie PNG
+        </button>
+      </div>
+    </header>
 
-      <text
-        x="30"
-        y="50"
-        fill="#00d2ff"
-        font-size="12"
-        font-family="monospace"
-        font-weight="bold"
-        letter-spacing="3"
-      >
-        📂 TYPESCRIPT BASICS
-      </text>
-      <line
-        x1="30"
-        y1="65"
-        x2="390"
-        y2="65"
-        stroke="#ffffff15"
-        stroke-width="1"
-      />
+    <div class="container">
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h3>📋 Karty (<span id="cardsCount">0</span>)</h3>
+          <button class="btn btn-primary btn-sm" onclick="addNewCard()">
+            + Nowa
+          </button>
+        </div>
+        <div class="cards-list" id="cardsList"></div>
+      </div>
 
-      <text
-        x="30"
-        y="100"
-        fill="#ffffff"
-        font-size="24"
-        font-family="'Segoe UI',sans-serif"
-        font-weight="bold"
-      >
-        Implicit Any
-      </text>
+      <div class="main">
+        <div class="editor-panel" id="editorPanel">
+          <div class="empty-state" id="emptyState">
+            <div class="icon">🃏</div>
+            <h3>Coding Cards Generator</h3>
+            <p>
+              Kliknij <strong>+ Nowa</strong> aby utworzyć<br />pierwszą fiszkę
+              lub <strong>Importuj JSON</strong><br />aby załadować zestaw.
+            </p>
+          </div>
 
-      <text
-        x="30"
-        y="132"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Zmienna bez typu i wartości początkowej
-      </text>
-      <text
-        x="30"
-        y="152"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        automatycznie otrzymuje typ any (niejawnie).
-      </text>
-      <text
-        x="30"
-        y="172"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Flaga noImplicitAny w tsconfig.json
-      </text>
-      <text
-        x="30"
-        y="192"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        blokuje to zachowanie — rekomendowane!
-      </text>
+          <div id="editorForm" style="display: none">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Kategoria</label>
+                <input
+                  type="text"
+                  id="fieldCategory"
+                  placeholder="np. TYPESCRIPT BASICS"
+                  oninput="onFieldChange()"
+                />
+              </div>
+              <div class="form-group">
+                <label>Ikona kategorii</label>
+                <select id="fieldCatIcon" onchange="onFieldChange()">
+                  <option value="📂">📂 Folder</option>
+                  <option value="⚠️">⚠️ Uwaga</option>
+                  <option value="💡">💡 Porada</option>
+                  <option value="🔧">🔧 Narzędzie</option>
+                  <option value="🚀">🚀 Zaawansowane</option>
+                  <option value="📦">📦 Moduł</option>
+                  <option value="🎯">🎯 Precyzja</option>
+                  <option value="🔒">🔒 Bezpieczeństwo</option>
+                </select>
+              </div>
+            </div>
 
-      <rect
-        x="20"
-        y="215"
-        width="380"
-        height="290"
-        rx="12"
-        fill="#0a0a1a"
-        stroke="#ffffff10"
-        stroke-width="1"
-      />
+            <div class="form-group">
+              <label>Tytuł karty</label>
+              <input
+                type="text"
+                id="fieldTitle"
+                placeholder="np. Union Types"
+                oninput="onFieldChange()"
+              />
+            </div>
 
-      <text
-        x="40"
-        y="248"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // ❌ Źle — implicit any
-      </text>
-      <text
-        x="40"
-        y="273"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">userName</tspan>
-        ;
-      </text>
-      <text
-        x="40"
-        y="298"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        userName =
-        <tspan fill="#ce9178">"Alice"</tspan>
-        ;
-      </text>
-      <text
-        x="40"
-        y="323"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        userName =
-        <tspan fill="#b5cea8">42</tspan>
-        ;
-      </text>
-      <text
-        x="40"
-        y="348"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // TS nie zgłosi błędu! ⚠️
-      </text>
+            <div class="form-group">
+              <label>Opis (każda linia = nowy wiersz, max 4)</label>
+              <textarea
+                id="fieldDesc"
+                rows="4"
+                placeholder="Linia 1 opisu&#10;Linia 2 opisu&#10;Linia 3 opisu&#10;Linia 4 opisu"
+                oninput="onFieldChange()"
+              ></textarea>
+            </div>
 
-      <text
-        x="40"
-        y="388"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // ✅ Dobrze — jawny typ
-      </text>
-      <text
-        x="40"
-        y="413"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">userName</tspan>
-        :
-        <tspan fill="#4ec9b0">string</tspan>
-        ;
-      </text>
-      <text
-        x="40"
-        y="438"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        userName =
-        <tspan fill="#ce9178">"Alice"</tspan>
-        ;
-        <tspan fill="#6a9955">// ✅</tspan>
-      </text>
-      <text
-        x="40"
-        y="463"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // userName = 42; // ❌ BŁĄD
-      </text>
+            <div class="form-group">
+              <label>Kod (każda linia renderowana osobno)</label>
+              <textarea
+                class="code-input"
+                id="fieldCode"
+                placeholder='// Twój przykład:&#10;let age: number | string = 25;&#10;age = "30";     // ✅ OK&#10;// age = true;  // ❌ BŁĄD'
+                oninput="onFieldChange()"
+              ></textarea>
+            </div>
 
-      <rect
-        x="20"
-        y="535"
-        width="380"
-        height="55"
-        rx="10"
-        fill="#00d2ff15"
-        stroke="#00d2ff30"
-        stroke-width="1"
-      />
-      <text
-        x="40"
-        y="558"
-        fill="#00d2ff"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        💡 Zawsze deklaruj typy jawnie.
-      </text>
-      <text
-        x="40"
-        y="578"
-        fill="#00d2ff"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Włącz noImplicitAny w tsconfig.json
-      </text>
+            <div class="form-group">
+              <label>Tip / Porada (max 2 linie)</label>
+              <textarea
+                id="fieldTip"
+                rows="2"
+                placeholder="💡 Linia 1 porady&#10;   Linia 2 porady"
+                oninput="onFieldChange()"
+              ></textarea>
+            </div>
 
-      <text
-        x="350"
-        y="612"
-        fill="#ffffff20"
-        font-size="11"
-        font-family="monospace"
-      >
-        01 / 11
-      </text>
-    </svg>
+            <div class="form-group">
+              <label>Motyw kolorystyczny</label>
+              <div class="theme-grid" id="themeGrid"></div>
+            </div>
 
-    <!-- ============================================ -->
-    <!-- CARD 02: TYP ANY — let age: any              -->
-    <!-- ============================================ -->
-    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color: #1a0a0a" />
-          <stop offset="50%" style="stop-color: #4a1942" />
-          <stop offset="100%" style="stop-color: #2d1b3d" />
-        </linearGradient>
-        <linearGradient id="accent2" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color: #ff416c" />
-          <stop offset="100%" style="stop-color: #ff4b2b" />
-        </linearGradient>
-      </defs>
-      <rect width="420" height="620" rx="20" fill="url(#bg2)" />
-      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent2)" />
+            <div
+              class="form-group"
+              style="
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-top: 10px;
+              "
+            >
+              <button class="btn btn-primary" onclick="downloadCurrentSVG()">
+                ⬇️ Pobierz SVG
+              </button>
+              <button class="btn btn-success" onclick="downloadCurrentPNG()">
+                🖼️ Pobierz PNG
+              </button>
+              <button class="btn btn-dark" onclick="duplicateCard()">
+                📋 Duplikuj
+              </button>
+            </div>
+          </div>
+        </div>
 
-      <text
-        x="30"
-        y="50"
-        fill="#ff416c"
-        font-size="12"
-        font-family="monospace"
-        font-weight="bold"
-        letter-spacing="3"
-      >
-        ⚠️ TYPESCRIPT BASICS
-      </text>
-      <line
-        x1="30"
-        y1="65"
-        x2="390"
-        y2="65"
-        stroke="#ffffff15"
-        stroke-width="1"
-      />
+        <div class="preview-panel" id="previewPanel">
+          <div id="svgPreview"></div>
+        </div>
+      </div>
+    </div>
 
-      <text
-        x="30"
-        y="100"
-        fill="#ffffff"
-        font-size="24"
-        font-family="'Segoe UI',sans-serif"
-        font-weight="bold"
-      >
-        Typ Any
-      </text>
+    <div class="modal-overlay" id="importModal">
+      <div class="modal">
+        <h2>📂 Importuj karty z JSON</h2>
+        <textarea
+          id="importTextarea"
+          placeholder="Wklej tutaj JSON z kartami..."
+        ></textarea>
+        <div class="modal-actions">
+          <button class="btn btn-dark" onclick="closeImportModal()">
+            Anuluj
+          </button>
+          <button class="btn btn-primary" onclick="importJSON()">
+            Importuj
+          </button>
+        </div>
+      </div>
+    </div>
 
-      <text
-        x="30"
-        y="132"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Wyłącza sprawdzanie typów dla zmiennej.
-      </text>
-      <text
-        x="30"
-        y="152"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        TS przestaje pilnować — tracimy cały sens TS.
-      </text>
-      <text
-        x="30"
-        y="172"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Używaj TYLKO tymczasowo (np. migracja z JS).
-      </text>
-      <text
-        x="30"
-        y="192"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Lepsza alternatywa: unknown.
-      </text>
+    <div class="toast" id="toast"></div>
 
-      <rect
-        x="20"
-        y="215"
-        width="380"
-        height="290"
-        rx="12"
-        fill="#0a0a1a"
-        stroke="#ffffff10"
-        stroke-width="1"
-      />
+    <script>
+      const THEMES = [
+        {
+          id: "ocean",
+          name: "Ocean",
+          bg: ["#0f0c29", "#302b63", "#24243e"],
+          accent: ["#00d2ff", "#3a7bd5"],
+          color: "#00d2ff",
+        },
+        {
+          id: "fire",
+          name: "Ogień",
+          bg: ["#1a0a0a", "#4a1942", "#2d1b3d"],
+          accent: ["#ff416c", "#ff4b2b"],
+          color: "#ff416c",
+        },
+        {
+          id: "forest",
+          name: "Las",
+          bg: ["#0a1628", "#1a3a5c", "#0d2137"],
+          accent: ["#11998e", "#38ef7d"],
+          color: "#38ef7d",
+        },
+        {
+          id: "purple",
+          name: "Fiolet",
+          bg: ["#1a0a28", "#3b1f6e", "#261447"],
+          accent: ["#a855f7", "#6366f1"],
+          color: "#a855f7",
+        },
+        {
+          id: "gold",
+          name: "Złoto",
+          bg: ["#0a2818", "#1a4a2e", "#0d3720"],
+          accent: ["#f7971e", "#ffd200"],
+          color: "#ffd200",
+        },
+        {
+          id: "crimson",
+          name: "Karmazyn",
+          bg: ["#1a1a2e", "#16213e", "#0f3460"],
+          accent: ["#e94560", "#f97316"],
+          color: "#e94560",
+        },
+        {
+          id: "indigo",
+          name: "Indygo",
+          bg: ["#1a0a28", "#2d1b69", "#1a1145"],
+          accent: ["#667eea", "#764ba2"],
+          color: "#667eea",
+        },
+        {
+          id: "cyan",
+          name: "Cyan",
+          bg: ["#0c0c1d", "#1e3a5f", "#162447"],
+          accent: ["#0ea5e9", "#06b6d4"],
+          color: "#06b6d4",
+        },
+        {
+          id: "amber",
+          name: "Bursztyn",
+          bg: ["#1a0f0a", "#5c2e0e", "#3d1f0a"],
+          accent: ["#f59e0b", "#ef4444"],
+          color: "#f59e0b",
+        },
+        {
+          id: "emerald",
+          name: "Szmaragd",
+          bg: ["#0a1a0a", "#1a4a1a", "#0d370d"],
+          accent: ["#22c55e", "#10b981"],
+          color: "#22c55e",
+        },
+        {
+          id: "rose",
+          name: "Róż",
+          bg: ["#0c0c1d", "#2a1a3e", "#1a1030"],
+          accent: ["#ec4899", "#f43f5e"],
+          color: "#ec4899",
+        },
+        {
+          id: "sky",
+          name: "Niebo",
+          bg: ["#0a1020", "#1a2a4e", "#0d1a35"],
+          accent: ["#38bdf8", "#818cf8"],
+          color: "#38bdf8",
+        },
+      ];
 
-      <text
-        x="40"
-        y="248"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">age</tspan>
-        :
-        <tspan fill="#ff416c">any</tspan>
-        =
-        <tspan fill="#b5cea8">25</tspan>
-        ;
-      </text>
-      <text
-        x="40"
-        y="278"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        age =
-        <tspan fill="#ce9178">"30"</tspan>
-        ;
-        <tspan fill="#6a9955">// ✅ brak błędu</tspan>
-      </text>
-      <text
-        x="40"
-        y="303"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        age =
-        <tspan fill="#569cd6">true</tspan>
-        ;
-        <tspan fill="#6a9955">// ✅ brak błędu</tspan>
-      </text>
-      <text
-        x="40"
-        y="333"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        age.foo.bar;
-      </text>
-      <text
-        x="40"
-        y="358"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // ✅ TS OK, ale CRASH w runtime!
-      </text>
+      let cards = [];
+      let activeCardIndex = -1;
 
-      <text
-        x="40"
-        y="398"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Bezpieczna alternatywa:
-      </text>
-      <text
-        x="40"
-        y="423"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">val</tspan>
-        :
-        <tspan fill="#38ef7d">unknown</tspan>
-        =
-        <tspan fill="#b5cea8">25</tspan>
-        ;
-      </text>
-      <text
-        x="40"
-        y="448"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // val.toFixed() ❌ — musisz sprawdzić
-      </text>
-      <text
-        x="40"
-        y="473"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // typeof val === "number" → ✅
-      </text>
+      function init() {
+        loadFromStorage();
+        renderThemeGrid();
+        renderCardsList();
+        if (cards.length > 0) selectCard(0);
+      }
 
-      <rect
-        x="20"
-        y="535"
-        width="380"
-        height="55"
-        rx="10"
-        fill="#ff416c15"
-        stroke="#ff416c30"
-        stroke-width="1"
-      />
-      <text
-        x="40"
-        y="558"
-        fill="#ff416c"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        ⚠️ any = ucieczka od systemu typów.
-      </text>
-      <text
-        x="40"
-        y="578"
-        fill="#ff416c"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        💡 Użyj unknown — wymusza sprawdzenie typu
-      </text>
+      function saveToStorage() {
+        localStorage.setItem("codingCards", JSON.stringify(cards));
+      }
 
-      <text
-        x="350"
-        y="612"
-        fill="#ffffff20"
-        font-size="11"
-        font-family="monospace"
-      >
-        02 / 11
-      </text>
-    </svg>
+      function loadFromStorage() {
+        const saved = localStorage.getItem("codingCards");
+        if (saved) {
+          try {
+            cards = JSON.parse(saved);
+          } catch (e) {
+            cards = [];
+          }
+        }
+      }
 
-    <!-- ============================================ -->
-    <!-- CARD 03: UNION TYPES — let agePerson          -->
-    <!-- ============================================ -->
-    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color: #1a0a28" />
-          <stop offset="50%" style="stop-color: #3b1f6e" />
-          <stop offset="100%" style="stop-color: #261447" />
-        </linearGradient>
-        <linearGradient id="accent3" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color: #a855f7" />
-          <stop offset="100%" style="stop-color: #6366f1" />
-        </linearGradient>
-      </defs>
-      <rect width="420" height="620" rx="20" fill="url(#bg3)" />
-      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent3)" />
+      function addNewCard() {
+        const card = {
+          id: Date.now(),
+          category: "TYPESCRIPT BASICS",
+          catIcon: "📂",
+          title: "Nowa karta",
+          desc: ["Opis linijka 1", "Opis linijka 2"],
+          code: ["// Twój kod tutaj", 'let x: string = "hello";'],
+          tip: ["💡 Twoja porada tutaj"],
+          theme: "ocean",
+        };
+        cards.push(card);
+        saveToStorage();
+        renderCardsList();
+        selectCard(cards.length - 1);
+        showToast("✅ Dodano nową kartę");
+      }
 
-      <text
-        x="30"
-        y="50"
-        fill="#a855f7"
-        font-size="12"
-        font-family="monospace"
-        font-weight="bold"
-        letter-spacing="3"
-      >
-        📂 TYPESCRIPT TYPES
-      </text>
-      <line
-        x1="30"
-        y1="65"
-        x2="390"
-        y2="65"
-        stroke="#ffffff15"
-        stroke-width="1"
-      />
+      function deleteCard(index, e) {
+        e.stopPropagation();
+        if (!confirm("Usunąć tę kartę?")) return;
+        cards.splice(index, 1);
+        saveToStorage();
+        renderCardsList();
+        if (cards.length === 0) {
+          activeCardIndex = -1;
+          document.getElementById("editorForm").style.display = "none";
+          document.getElementById("emptyState").style.display = "block";
+          document.getElementById("svgPreview").innerHTML = "";
+        } else {
+          selectCard(Math.min(index, cards.length - 1));
+        }
+        showToast("🗑️ Karta usunięta");
+      }
 
-      <text
-        x="30"
-        y="100"
-        fill="#ffffff"
-        font-size="24"
-        font-family="'Segoe UI',sans-serif"
-        font-weight="bold"
-      >
-        Union Types
-      </text>
+      function duplicateCard() {
+        if (activeCardIndex < 0) return;
+        const original = cards[activeCardIndex];
+        const copy = JSON.parse(JSON.stringify(original));
+        copy.id = Date.now();
+        copy.title = copy.title + " (kopia)";
+        cards.splice(activeCardIndex + 1, 0, copy);
+        saveToStorage();
+        renderCardsList();
+        selectCard(activeCardIndex + 1);
+        showToast("📋 Karta zduplikowana");
+      }
 
-      <text
-        x="30"
-        y="132"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Zmienna może przyjmować JEDEN
-      </text>
-      <text
-        x="30"
-        y="152"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        z wymienionych typów. Operator | oznacza "lub".
-      </text>
-      <text
-        x="30"
-        y="172"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Daje elastyczność z zachowaniem
-      </text>
-      <text
-        x="30"
-        y="192"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        bezpieczeństwa typów.
-      </text>
+      function renderCardsList() {
+        const list = document.getElementById("cardsList");
+        document.getElementById("cardsCount").textContent = cards.length;
 
-      <rect
-        x="20"
-        y="215"
-        width="380"
-        height="290"
-        rx="12"
-        fill="#0a0a1a"
-        stroke="#ffffff10"
-        stroke-width="1"
-      />
+        if (cards.length === 0) {
+          list.innerHTML =
+            '<div class="empty-state" style="padding:30px 10px;"><div class="icon">📭</div><p style="font-size:12px;">Brak kart.<br>Kliknij + Nowa</p></div>';
+          return;
+        }
 
-      <text
-        x="40"
-        y="248"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">agePerson</tspan>
-        :
-        <tspan fill="#4ec9b0">number</tspan>
-        |
-        <tspan fill="#4ec9b0">string</tspan>
-      </text>
-      <text
-        x="40"
-        y="273"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        =
-        <tspan fill="#ce9178">"25"</tspan>
-        ;
-      </text>
-      <text
-        x="40"
-        y="303"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        agePerson =
-        <tspan fill="#b5cea8">30</tspan>
-        ;
-        <tspan fill="#6a9955">// ✅ number</tspan>
-      </text>
-      <text
-        x="40"
-        y="328"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // agePerson = true; // ❌ boolean
-      </text>
+        list.innerHTML = cards
+          .map((card, i) => {
+            const themeColor =
+              THEMES.find((t) => t.id === card.theme)?.color || "#3a7bd5";
+            return (
+              '<div class="card-item ' +
+              (i === activeCardIndex ? "active" : "") +
+              '" onclick="selectCard(' +
+              i +
+              ')" style="border-left: 3px solid ' +
+              themeColor +
+              '"><div class="card-info"><div class="card-title">' +
+              card.catIcon +
+              " " +
+              escapeHtml(card.title) +
+              '</div><div class="card-cat">' +
+              escapeHtml(card.category) +
+              '</div></div><span class="card-num">' +
+              String(i + 1).padStart(2, "0") +
+              '</span><button class="delete-btn" onclick="deleteCard(' +
+              i +
+              ', event)">✕</button></div>'
+            );
+          })
+          .join("");
+      }
 
-      <text
-        x="40"
-        y="368"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Wymaga type narrowing:
-      </text>
-      <text
-        x="40"
-        y="393"
-        fill="#c586c0"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
+      function escapeHtml(str) {
+        const div = document.createElement("div");
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function selectCard(index) {
+        activeCardIndex = index;
+        const card = cards[index];
+
+        document.getElementById("emptyState").style.display = "none";
+        document.getElementById("editorForm").style.display = "block";
+
+        document.getElementById("fieldCategory").value = card.category;
+        document.getElementById("fieldCatIcon").value = card.catIcon;
+        document.getElementById("fieldTitle").value = card.title;
+        document.getElementById("fieldDesc").value = (card.desc || []).join(
+          "\n",
+        );
+        document.getElementById("fieldCode").value = (card.code || []).join(
+          "\n",
+        );
+        document.getElementById("fieldTip").value = (card.tip || []).join("\n");
+
+        document.querySelectorAll(".theme-option").forEach(function (el) {
+          el.classList.toggle("active", el.dataset.theme === card.theme);
+        });
+
+        renderCardsList();
+        renderPreview();
+      }
+
+      function onFieldChange() {
+        if (activeCardIndex < 0) return;
+        const card = cards[activeCardIndex];
+
+        card.category = document.getElementById("fieldCategory").value;
+        card.catIcon = document.getElementById("fieldCatIcon").value;
+        card.title = document.getElementById("fieldTitle").value;
+        card.desc = document
+          .getElementById("fieldDesc")
+          .value.split("\n")
+          .filter(function (l) {
+            return l.trim();
+          });
+        card.code = document.getElementById("fieldCode").value.split("\n");
+        card.tip = document
+          .getElementById("fieldTip")
+          .value.split("\n")
+          .filter(function (l) {
+            return l.trim();
+          });
+
+        saveToStorage();
+        renderCardsList();
+        renderPreview();
+      }
+
+      function selectTheme(themeId) {
+        if (activeCardIndex < 0) return;
+        cards[activeCardIndex].theme = themeId;
+        document.querySelectorAll(".theme-option").forEach(function (el) {
+          el.classList.toggle("active", el.dataset.theme === themeId);
+        });
+        saveToStorage();
+        renderPreview();
+      }
+
+      function renderThemeGrid() {
+        const grid = document.getElementById("themeGrid");
+        grid.innerHTML = THEMES.map(function (t) {
+          return (
+            '<div class="theme-option" data-theme="' +
+            t.id +
+            '" onclick="selectTheme(\'' +
+            t.id +
+            '\')"><div class="theme-preview" style="background:linear-gradient(135deg, ' +
+            t.accent[0] +
+            ", " +
+            t.accent[1] +
+            ')"></div><div class="theme-name">' +
+            t.name +
+            "</div></div>"
+          );
+        }).join("");
+      }
+
+      // =============================================
+      // SVG RENDERING — FIXED SYNTAX HIGHLIGHT
+      // =============================================
+
+      function escapeXml(str) {
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&apos;");
+      }
+
+      function syntaxHighlight(line) {
+        var escaped = escapeXml(line);
+
+        // Pełna linia komentarza
+        if (escaped.trim().startsWith("//")) {
+          return '<tspan fill="#6a9955">' + escaped + "</tspan>";
+        }
+
+        var keywords = [
+          "let",
+          "const",
+          "var",
+          "function",
+          "type",
+          "enum",
+          "interface",
+          "if",
+          "else",
+          "return",
+          "import",
+          "export",
+          "from",
+          "typeof",
+          "instanceof",
+          "new",
+          "class",
+          "extends",
+          "implements",
+          "async",
+          "await",
+          "for",
+          "while",
+          "do",
+          "switch",
+          "case",
+          "break",
+          "continue",
+          "default",
+          "try",
+          "catch",
+          "finally",
+          "throw",
+        ];
+
+        var types = [
+          "string",
+          "number",
+          "boolean",
+          "any",
+          "unknown",
+          "void",
+          "never",
+          "null",
+          "undefined",
+          "object",
+          "Array",
+          "Record",
+          "Partial",
+          "Required",
+          "Pick",
+          "Omit",
+          "Readonly",
+          "Promise",
+          "Map",
+          "Set",
+        ];
+
+        var keywordSet = {};
+        keywords.forEach(function (k) {
+          keywordSet[k] = true;
+        });
+
+        var typeSet = {};
+        types.forEach(function (t) {
+          typeSet[t] = true;
+        });
+
+        // Tokenizer regex — przetwarza tekst RAZ
+        var tokenRegex =
+          /(&quot;.*?&quot;|&apos;.*?&apos;|\/\/.*$|&amp;|&lt;|&gt;|\b[a-zA-Z_]\w*\b|\b\d+\.?\d*\b|\s+|.)/g;
+
+        var result = "";
+        var match;
+
+        while ((match = tokenRegex.exec(escaped)) !== null) {
+          var t = match[0];
+
+          if (t.startsWith("//")) {
+            // Komentarz inline
+            result += '<tspan fill="#6a9955">' + t + "</tspan>";
+          } else if (t.startsWith("&quot;") || t.startsWith("&apos;")) {
+            // String
+            result += '<tspan fill="#ce9178">' + t + "</tspan>";
+          } else if (keywordSet[t]) {
+            // Słowo kluczowe
+            result += '<tspan fill="#569cd6">' + t + "</tspan>";
+          } else if (typeSet[t]) {
+            // Typ
+            result += '<tspan fill="#4ec9b0">' + t + "</tspan>";
+          } else if (t === "true" || t === "false") {
+            // Boolean
+            result += '<tspan fill="#569cd6">' + t + "</tspan>";
+          } else if (/^\d+\.?\d*$/.test(t)) {
+            // Liczba
+            result += '<tspan fill="#b5cea8">' + t + "</tspan>";
+          } else {
+            // Reszta
+            result += '<tspan fill="#d4d4d4">' + t + "</tspan>";
+          }
+        }
+
+        return result;
+      }
+
+      function generateSVG(card, index) {
+        var theme =
+          THEMES.find(function (t) {
+            return t.id === card.theme;
+          }) || THEMES[0];
+        var totalCards = cards.length;
+
+        var descLines = (card.desc || []).slice(0, 4);
+        var codeLines = card.code || [];
+        var tipLines = (card.tip || []).slice(0, 2);
+
+        var descHeight = descLines.length * 20;
+        var codeHeight = Math.max(codeLines.length * 22 + 40, 80);
+        var tipHeight = tipLines.length > 0 ? tipLines.length * 20 + 30 : 0;
+
+        var headerY = 65;
+        var titleY = headerY + 40;
+        var descStartY = titleY + 28;
+        var codeBoxY = descStartY + descHeight + 25;
+        var tipBoxY = codeBoxY + codeHeight + 20;
+        var totalHeight = tipBoxY + tipHeight + 50;
+
+        var codeSVG = codeLines
+          .map(function (line, i) {
+            var y = codeBoxY + 35 + i * 22;
+            return (
+              '<text x="40" y="' +
+              y +
+              '" fill="#d4d4d4" font-size="12" font-family="\'Courier New\',monospace">' +
+              syntaxHighlight(line) +
+              "</text>"
+            );
+          })
+          .join("\n    ");
+
+        var descSVG = descLines
+          .map(function (line, i) {
+            var y = descStartY + i * 20;
+            return (
+              '<text x="30" y="' +
+              y +
+              '" fill="#a0a0b8" font-size="13" font-family="\'Segoe UI\',sans-serif">' +
+              escapeXml(line) +
+              "</text>"
+            );
+          })
+          .join("\n    ");
+
+        var tipSVG = "";
+        if (tipLines.length > 0) {
+          var tipTexts = tipLines
+            .map(function (line, i) {
+              var y = tipBoxY + 22 + i * 20;
+              return (
+                '<text x="40" y="' +
+                y +
+                '" fill="' +
+                theme.color +
+                '" font-size="12" font-family="\'Segoe UI\',sans-serif">' +
+                escapeXml(line) +
+                "</text>"
+              );
+            })
+            .join("\n    ");
+
+          tipSVG =
+            '<rect x="20" y="' +
+            tipBoxY +
+            '" width="380" height="' +
+            (tipLines.length * 20 + 20) +
+            '" rx="10" fill="' +
+            theme.color +
+            '15" stroke="' +
+            theme.color +
+            '30" stroke-width="1"/>\n    ' +
+            tipTexts;
+        }
+
+        var svg =
+          '<svg width="420" height="' +
+          totalHeight +
+          '" xmlns="http://www.w3.org/2000/svg">\n' +
+          "  <defs>\n" +
+          '    <linearGradient id="bg_' +
+          card.id +
+          '" x1="0%" y1="0%" x2="100%" y2="100%">\n' +
+          '      <stop offset="0%" style="stop-color:' +
+          theme.bg[0] +
+          '"/>\n' +
+          '      <stop offset="50%" style="stop-color:' +
+          theme.bg[1] +
+          '"/>\n' +
+          '      <stop offset="100%" style="stop-color:' +
+          theme.bg[2] +
+          '"/>\n' +
+          "    </linearGradient>\n" +
+          '    <linearGradient id="acc_' +
+          card.id +
+          '" x1="0%" y1="0%" x2="100%" y2="0%">\n' +
+          '      <stop offset="0%" style="stop-color:' +
+          theme.accent[0] +
+          '"/>\n' +
+          '      <stop offset="100%" style="stop-color:' +
+          theme.accent[1] +
+          '"/>\n' +
+          "    </linearGradient>\n" +
+          "  </defs>\n" +
+          '  <rect width="420" height="' +
+          totalHeight +
+          '" rx="20" fill="url(#bg_' +
+          card.id +
+          ')"/>\n' +
+          '  <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#acc_' +
+          card.id +
+          ')"/>\n' +
+          '  <text x="30" y="50" fill="' +
+          theme.color +
+          '" font-size="12" font-family="monospace" font-weight="bold" letter-spacing="3">' +
+          escapeXml(card.catIcon) +
+          " " +
+          escapeXml(card.category.toUpperCase()) +
+          "</text>\n" +
+          '  <line x1="30" y1="' +
+          headerY +
+          '" x2="390" y2="' +
+          headerY +
+          '" stroke="#ffffff15" stroke-width="1"/>\n' +
+          '  <text x="30" y="' +
+          titleY +
+          '" fill="#ffffff" font-size="24" font-family="\'Segoe UI\',sans-serif" font-weight="bold">' +
+          escapeXml(card.title) +
+          "</text>\n" +
+          "  " +
+          descSVG +
+          "\n" +
+          '  <rect x="20" y="' +
+          codeBoxY +
+          '" width="380" height="' +
+          codeHeight +
+          '" rx="12" fill="#0a0a1a" stroke="#ffffff10" stroke-width="1"/>\n' +
+          "  " +
+          codeSVG +
+          "\n" +
+          "  " +
+          tipSVG +
+          "\n" +
+          '  <text x="350" y="' +
+          (totalHeight - 15) +
+          '" fill="#ffffff20" font-size="11" font-family="monospace">' +
+          String(index + 1).padStart(2, "0") +
+          " / " +
+          String(totalCards).padStart(2, "0") +
+          "</text>\n" +
+          "</svg>";
+
+        return svg;
+      }
+
+      function renderPreview() {
+        if (activeCardIndex < 0) return;
+        var svg = generateSVG(cards[activeCardIndex], activeCardIndex);
+        document.getElementById("svgPreview").innerHTML = svg;
+      }
+
+      // =============================================
+      // DOWNLOADS
+      // =============================================
+
+      function downloadSVGBlob(svgString, filename) {
+        var blob = new Blob([svgString], { type: "image/svg+xml" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+
+      function safeName(title) {
+        return title
+          .replace(/[^a-zA-Z0-9ąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]/g, "")
+          .replace(/ +/g, "-")
+          .toLowerCase();
+      }
+
+      function downloadCurrentSVG() {
+        if (activeCardIndex < 0) return;
+        var card = cards[activeCardIndex];
+        var svg = generateSVG(card, activeCardIndex);
+        downloadSVGBlob(
+          svg,
+          "card-" +
+            String(activeCardIndex + 1).padStart(2, "0") +
+            "-" +
+            safeName(card.title) +
+            ".svg",
+        );
+        showToast("⬇️ SVG pobrane!");
+      }
+
+      function downloadAllSVG() {
+        if (cards.length === 0) {
+          showToast("❌ Brak kart do pobrania");
+          return;
+        }
+        cards.forEach(function (card, i) {
+          var svg = generateSVG(card, i);
+          setTimeout(function () {
+            downloadSVGBlob(
+              svg,
+              "card-" +
+                String(i + 1).padStart(2, "0") +
+                "-" +
+                safeName(card.title) +
+                ".svg",
+            );
+          }, i * 200);
+        });
+        showToast("⬇️ Pobieranie " + cards.length + " kart SVG...");
+      }
+
+      function svgToPNG(svgString, width, height) {
+        return new Promise(function (resolve) {
+          var canvas = document.createElement("canvas");
+          var scale = 2;
+          canvas.width = width * scale;
+          canvas.height = height * scale;
+          var ctx = canvas.getContext("2d");
+          ctx.scale(scale, scale);
+
+          var img = new Image();
+          var blob = new Blob([svgString], { type: "image/svg+xml" });
+          var url = URL.createObjectURL(blob);
+
+          img.onload = function () {
+            ctx.drawImage(img, 0, 0, width, height);
+            URL.revokeObjectURL(url);
+            canvas.toBlob(function (blob) {
+              resolve(blob);
+            }, "image/png");
+          };
+          img.src = url;
+        });
+      }
+
+      async function downloadCurrentPNG() {
+        if (activeCardIndex < 0) return;
+        var card = cards[activeCardIndex];
+        var svg = generateSVG(card, activeCardIndex);
+        var heightMatch = svg.match(/height="(\d+)"/);
+        var height = heightMatch ? parseInt(heightMatch[1]) : 620;
+
+        var blob = await svgToPNG(svg, 420, height);
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download =
+          "card-" +
+          String(activeCardIndex + 1).padStart(2, "0") +
+          "-" +
+          safeName(card.title) +
+          ".png";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast("🖼️ PNG pobrane!");
+      }
+
+      async function downloadAllPNG() {
+        if (cards.length === 0) {
+          showToast("❌ Brak kart do pobrania");
+          return;
+        }
+        showToast("🖼️ Generowanie " + cards.length + " PNG...");
+
+        for (var i = 0; i < cards.length; i++) {
+          var card = cards[i];
+          var svg = generateSVG(card, i);
+          var heightMatch = svg.match(/height="(\d+)"/);
+          var height = heightMatch ? parseInt(heightMatch[1]) : 620;
+
+          var blob = await svgToPNG(svg, 420, height);
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download =
+            "card-" +
+            String(i + 1).padStart(2, "0") +
+            "-" +
+            safeName(card.title) +
+            ".png";
+          a.click();
+          URL.revokeObjectURL(a.href);
+
+          await new Promise(function (r) {
+            setTimeout(r, 300);
+          });
+        }
+        showToast("✅ Pobrano " + cards.length + " kart PNG!");
+      }
+
+      // =============================================
+      // JSON EXPORT / IMPORT
+      // =============================================
+
+      function exportJSON() {
+        var json = JSON.stringify(cards, null, 2);
+        var blob = new Blob([json], { type: "application/json" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "coding-cards.json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast("📁 JSON wyeksportowany!");
+      }
+
+      function showImportModal() {
+        document.getElementById("importModal").classList.add("show");
+        document.getElementById("importTextarea").value = "";
+        document.getElementById("importTextarea").focus();
+      }
+
+      function closeImportModal() {
+        document.getElementById("importModal").classList.remove("show");
+      }
+
+      function importJSON() {
+        var text = document.getElementById("importTextarea").value.trim();
+        try {
+          var imported = JSON.parse(text);
+          if (!Array.isArray(imported)) throw new Error("Nie jest tablicą");
+
+          imported.forEach(function (card) {
+            card.id = Date.now() + Math.floor(Math.random() * 10000);
+          });
+
+          cards = cards.concat(imported);
+          saveToStorage();
+          renderCardsList();
+          if (cards.length > 0) selectCard(cards.length - imported.length);
+          closeImportModal();
+          showToast("📂 Zaimportowano " + imported.length + " kart!");
+        } catch (e) {
+          alert("Błąd parsowania JSON:\n" + e.message);
+        }
+      }
+
+      // =============================================
+      // TOAST
+      // =============================================
+
+      function showToast(message) {
+        var toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        setTimeout(function () {
+          toast.classList.remove("show");
+        }, 2500);
+      }
+
+      // =============================================
+      // KEYBOARD SHORTCUTS
+      // =============================================
+
+      document.addEventListener("keydown", function (e) {
+        if (activeCardIndex < 0) return;
+
+        if (e.altKey && e.key === "ArrowUp" && activeCardIndex > 0) {
+          e.preventDefault();
+          var temp = cards[activeCardIndex];
+          cards[activeCardIndex] = cards[activeCardIndex - 1];
+          cards[activeCardIndex - 1] = temp;
+          activeCardIndex--;
+          saveToStorage();
+          renderCardsList();
+          renderPreview();
+        }
+
         if (
-        <tspan fill="#569cd6">typeof</tspan>
-        <tspan fill="#9cdcfe">agePerson</tspan>
-        ===
-        <tspan fill="#ce9178">"number"</tspan>
-        ){
-      </text>
-      <text
-        x="40"
-        y="418"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        agePerson.toFixed(
-        <tspan fill="#b5cea8">2</tspan>
-        );
-        <tspan fill="#6a9955">// ✅</tspan>
-      </text>
-      <text
-        x="40"
-        y="443"
-        fill="#c586c0"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
+          e.altKey &&
+          e.key === "ArrowDown" &&
+          activeCardIndex < cards.length - 1
+        ) {
+          e.preventDefault();
+          var temp2 = cards[activeCardIndex];
+          cards[activeCardIndex] = cards[activeCardIndex + 1];
+          cards[activeCardIndex + 1] = temp2;
+          activeCardIndex++;
+          saveToStorage();
+          renderCardsList();
+          renderPreview();
         }
-        <tspan fill="#569cd6">else</tspan>
-        {
-      </text>
-      <text
-        x="40"
-        y="468"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        agePerson.toUpperCase();
-        <tspan fill="#6a9955">// ✅</tspan>
-      </text>
-      <text
-        x="40"
-        y="493"
-        fill="#c586c0"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        }
-      </text>
-
-      <rect
-        x="20"
-        y="535"
-        width="380"
-        height="55"
-        rx="10"
-        fill="#a855f715"
-        stroke="#a855f730"
-        stroke-width="1"
-      />
-      <text
-        x="40"
-        y="558"
-        fill="#a855f7"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        💡 Operator | daje elastyczność
-      </text>
-      <text
-        x="40"
-        y="578"
-        fill="#a855f7"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        z bezpieczeństwem typów
-      </text>
-
-      <text
-        x="350"
-        y="612"
-        fill="#ffffff20"
-        font-size="11"
-        font-family="monospace"
-      >
-        03 / 11
-      </text>
-    </svg>
-
-    <!-- ============================================ -->
-    <!-- CARD 04: TABLICE T[] — let hobbies            -->
-    <!-- ============================================ -->
-    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color: #0a2818" />
-          <stop offset="50%" style="stop-color: #1a4a2e" />
-          <stop offset="100%" style="stop-color: #0d3720" />
-        </linearGradient>
-        <linearGradient id="accent4" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color: #f7971e" />
-          <stop offset="100%" style="stop-color: #ffd200" />
-        </linearGradient>
-      </defs>
-      <rect width="420" height="620" rx="20" fill="url(#bg4)" />
-      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent4)" />
-
-      <text
-        x="30"
-        y="50"
-        fill="#ffd200"
-        font-size="12"
-        font-family="monospace"
-        font-weight="bold"
-        letter-spacing="3"
-      >
-        📂 ARRAYS
-      </text>
-      <line
-        x1="30"
-        y1="65"
-        x2="390"
-        y2="65"
-        stroke="#ffffff15"
-        stroke-width="1"
-      />
-
-      <text
-        x="30"
-        y="100"
-        fill="#ffffff"
-        font-size="24"
-        font-family="'Segoe UI',sans-serif"
-        font-weight="bold"
-      >
-        Tablice — składnia T[]
-      </text>
-
-      <text
-        x="30"
-        y="132"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Typowanie tablicy: typ[] — elementy
-      </text>
-      <text
-        x="30"
-        y="152"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        tylko tego jednego typu.
-      </text>
-      <text
-        x="30"
-        y="172"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Przy union types nawiasy () są kluczowe —
-      </text>
-      <text
-        x="30"
-        y="192"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        zmieniają znaczenie typu!
-      </text>
-
-      <rect
-        x="20"
-        y="215"
-        width="380"
-        height="290"
-        rx="12"
-        fill="#0a0a1a"
-        stroke="#ffffff10"
-        stroke-width="1"
-      />
-
-      <text
-        x="40"
-        y="248"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Tablica TYLKO stringów:
-      </text>
-      <text
-        x="40"
-        y="273"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">hobbies</tspan>
-        :
-        <tspan fill="#4ec9b0">string</tspan>
-        [];
-      </text>
-      <text
-        x="40"
-        y="298"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        hobbies = [
-        <tspan fill="#ce9178">"Sports"</tspan>
-        ,
-        <tspan fill="#ce9178">"Cooking"</tspan>
-        ];
-      </text>
-      <text
-        x="40"
-        y="323"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // hobbies = ["A", 5]; ❌ 5 ≠ string
-      </text>
-
-      <text
-        x="40"
-        y="363"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Tablica mieszana (string LUB number):
-      </text>
-      <text
-        x="40"
-        y="388"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">hobbies1</tspan>
-        : (
-        <tspan fill="#4ec9b0">string</tspan>
-        |
-        <tspan fill="#4ec9b0">number</tspan>
-        )[];
-      </text>
-      <text
-        x="40"
-        y="413"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // ["A", 1, "B", 2] ✅
-      </text>
-
-      <text
-        x="40"
-        y="453"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // ⚠️ BEZ nawiasów = co innego!
-      </text>
-      <text
-        x="40"
-        y="478"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // string | number[]
-      </text>
-      <text
-        x="40"
-        y="493"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // = string LUB tablica numberów
-      </text>
-
-      <rect
-        x="20"
-        y="535"
-        width="380"
-        height="55"
-        rx="10"
-        fill="#ffd20015"
-        stroke="#ffd20030"
-        stroke-width="1"
-      />
-      <text
-        x="40"
-        y="558"
-        fill="#ffd200"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        💡 (string|number)[] ≠ string|number[]
-      </text>
-      <text
-        x="40"
-        y="578"
-        fill="#ffd200"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Nawiasy zmieniają znaczenie!
-      </text>
-
-      <text
-        x="350"
-        y="612"
-        fill="#ffffff20"
-        font-size="11"
-        font-family="monospace"
-      >
-        04 / 11
-      </text>
-    </svg>
-
-    <!-- ============================================ -->
-    <!-- CARD 05: ARRAY<T> — let users2                -->
-    <!-- ============================================ -->
-    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bg5" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color: #0a1628" />
-          <stop offset="50%" style="stop-color: #1a3a5c" />
-          <stop offset="100%" style="stop-color: #0d2137" />
-        </linearGradient>
-        <linearGradient id="accent5" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color: #11998e" />
-          <stop offset="100%" style="stop-color: #38ef7d" />
-        </linearGradient>
-      </defs>
-      <rect width="420" height="620" rx="20" fill="url(#bg5)" />
-      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent5)" />
-
-      <text
-        x="30"
-        y="50"
-        fill="#38ef7d"
-        font-size="12"
-        font-family="monospace"
-        font-weight="bold"
-        letter-spacing="3"
-      >
-        📂 ARRAYS
-      </text>
-      <line
-        x1="30"
-        y1="65"
-        x2="390"
-        y2="65"
-        stroke="#ffffff15"
-        stroke-width="1"
-      />
-
-      <text
-        x="30"
-        y="100"
-        fill="#ffffff"
-        font-size="24"
-        font-family="'Segoe UI',sans-serif"
-        font-weight="bold"
-      >
-        Tablica — Array&lt;T&gt;
-      </text>
-
-      <text
-        x="30"
-        y="132"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Array&lt;T&gt; to generyczna (alternatywna)
-      </text>
-      <text
-        x="30"
-        y="152"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        składnia dla T[]. Obie formy są RÓWNOWAŻNE.
-      </text>
-      <text
-        x="30"
-        y="172"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Lepsza czytelność przy złożonych typach
-      </text>
-      <text
-        x="30"
-        y="192"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        — nie trzeba pamiętać o nawiasach.
-      </text>
-
-      <rect
-        x="20"
-        y="215"
-        width="380"
-        height="290"
-        rx="12"
-        fill="#0a0a1a"
-        stroke="#ffffff10"
-        stroke-width="1"
-      />
-
-      <text
-        x="40"
-        y="248"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Twój przykład — generyczna składnia:
-      </text>
-      <text
-        x="40"
-        y="273"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">users2</tspan>
-        :
-      </text>
-      <text
-        x="40"
-        y="298"
-        fill="#4ec9b0"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        Array&lt;
-        <tspan fill="#4ec9b0">string</tspan>
-        |
-        <tspan fill="#4ec9b0">number</tspan>
-        &gt; = [];
-      </text>
-
-      <text
-        x="40"
-        y="338"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // RÓWNOWAŻNE zapisy:
-      </text>
-      <text
-        x="40"
-        y="363"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">a</tspan>
-        :
-        <tspan fill="#4ec9b0">Array</tspan>
-        &lt;
-        <tspan fill="#4ec9b0">string</tspan>
-        &gt; = [
-        <tspan fill="#ce9178">"hi"</tspan>
-        ];
-      </text>
-      <text
-        x="40"
-        y="388"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">b</tspan>
-        :
-        <tspan fill="#4ec9b0">string</tspan>
-        [] = [
-        <tspan fill="#ce9178">"hi"</tspan>
-        ];
-      </text>
-      <text
-        x="40"
-        y="413"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // a i b to ten sam typ!
-      </text>
-
-      <text
-        x="40"
-        y="453"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Generyczna czytelniejsza przy union:
-      </text>
-      <text
-        x="40"
-        y="478"
-        fill="#4ec9b0"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        Array&lt;string | number&gt;
-        <tspan fill="#6a9955">// ✅ jasne</tspan>
-      </text>
-      <text
-        x="40"
-        y="493"
-        fill="#4ec9b0"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        (string | number)[]
-        <tspan fill="#6a9955">// ✅ też OK</tspan>
-      </text>
-
-      <rect
-        x="20"
-        y="535"
-        width="380"
-        height="55"
-        rx="10"
-        fill="#38ef7d15"
-        stroke="#38ef7d30"
-        stroke-width="1"
-      />
-      <text
-        x="40"
-        y="558"
-        fill="#38ef7d"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        💡 Array&lt;T&gt; === T[]
-      </text>
-      <text
-        x="40"
-        y="578"
-        fill="#38ef7d"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Wybierz jedną konwencję i trzymaj się jej
-      </text>
-
-      <text
-        x="350"
-        y="612"
-        fill="#ffffff20"
-        font-size="11"
-        font-family="monospace"
-      >
-        05 / 11
-      </text>
-    </svg>
-
-    <!-- ============================================ -->
-    <!-- CARD 06: TUPLE — let possibleResult           -->
-    <!-- ============================================ -->
-    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bg6" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color: #1a1a2e" />
-          <stop offset="50%" style="stop-color: #16213e" />
-          <stop offset="100%" style="stop-color: #0f3460" />
-        </linearGradient>
-        <linearGradient id="accent6" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color: #e94560" />
-          <stop offset="100%" style="stop-color: #f97316" />
-        </linearGradient>
-      </defs>
-      <rect width="420" height="620" rx="20" fill="url(#bg6)" />
-      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent6)" />
-
-      <text
-        x="30"
-        y="50"
-        fill="#e94560"
-        font-size="12"
-        font-family="monospace"
-        font-weight="bold"
-        letter-spacing="3"
-      >
-        📂 ARRAYS
-      </text>
-      <line
-        x1="30"
-        y1="65"
-        x2="390"
-        y2="65"
-        stroke="#ffffff15"
-        stroke-width="1"
-      />
-
-      <text
-        x="30"
-        y="100"
-        fill="#ffffff"
-        font-size="24"
-        font-family="'Segoe UI',sans-serif"
-        font-weight="bold"
-      >
-        Tuple (Krotka)
-      </text>
-
-      <text
-        x="30"
-        y="132"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Tablica o STAŁEJ długości i OKREŚLONYCH
-      </text>
-      <text
-        x="30"
-        y="152"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        typach na każdej pozycji.
-      </text>
-      <text
-        x="30"
-        y="172"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Kolejność typów MA znaczenie.
-      </text>
-      <text
-        x="30"
-        y="192"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        TS zna typ na każdej pozycji.
-      </text>
-
-      <rect
-        x="20"
-        y="215"
-        width="380"
-        height="290"
-        rx="12"
-        fill="#0a0a1a"
-        stroke="#ffffff10"
-        stroke-width="1"
-      />
-
-      <text
-        x="40"
-        y="248"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Twój przykład:
-      </text>
-      <text
-        x="40"
-        y="273"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">possibleResult</tspan>
-        :
-      </text>
-      <text
-        x="40"
-        y="298"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        [
-        <tspan fill="#4ec9b0">number</tspan>
-        ,
-        <tspan fill="#4ec9b0">string</tspan>
-        ]
-      </text>
-      <text
-        x="40"
-        y="323"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        = [
-        <tspan fill="#b5cea8">10</tspan>
-        ,
-        <tspan fill="#ce9178">"Hello"</tspan>
-        ];
-      </text>
-
-      <text
-        x="40"
-        y="363"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // TS zna typ na każdej pozycji:
-      </text>
-      <text
-        x="40"
-        y="388"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        possibleResult[
-        <tspan fill="#b5cea8">0</tspan>
-        ].toFixed();
-      </text>
-      <text
-        x="40"
-        y="408"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        <tspan fill="#6a9955">// ✅ number</tspan>
-      </text>
-      <text
-        x="40"
-        y="433"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        possibleResult[
-        <tspan fill="#b5cea8">1</tspan>
-        ].toUpperCase();
-      </text>
-      <text
-        x="40"
-        y="453"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        <tspan fill="#6a9955">// ✅ string</tspan>
-      </text>
-
-      <text
-        x="40"
-        y="483"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // ⚠️ Znana słabość TS:
-      </text>
-      <text
-        x="40"
-        y="498"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        possibleResult.push(
-        <tspan fill="#b5cea8">99</tspan>
-        );
-        <tspan fill="#6a9955">// TS OK!</tspan>
-      </text>
-
-      <rect
-        x="20"
-        y="535"
-        width="380"
-        height="55"
-        rx="10"
-        fill="#e9456015"
-        stroke="#e9456030"
-        stroke-width="1"
-      />
-      <text
-        x="40"
-        y="558"
-        fill="#e94560"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        ⚠️ push() omija walidację tuple w TS.
-      </text>
-      <text
-        x="40"
-        y="578"
-        fill="#e94560"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        💡 Kolejność i ilość elementów są pilnowane
-      </text>
-
-      <text
-        x="350"
-        y="612"
-        fill="#ffffff20"
-        font-size="11"
-        font-family="monospace"
-      >
-        06 / 11
-      </text>
-    </svg>
-
-    <!-- ============================================ -->
-    <!-- CARD 07: OBIEKT INLINE — let uss              -->
-    <!-- ============================================ -->
-    <svg width="420" height="720" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bg7" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color: #1a0a28" />
-          <stop offset="50%" style="stop-color: #2d1b69" />
-          <stop offset="100%" style="stop-color: #1a1145" />
-        </linearGradient>
-        <linearGradient id="accent7" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color: #667eea" />
-          <stop offset="100%" style="stop-color: #764ba2" />
-        </linearGradient>
-      </defs>
-      <rect width="420" height="720" rx="20" fill="url(#bg7)" />
-      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent7)" />
-
-      <text
-        x="30"
-        y="50"
-        fill="#667eea"
-        font-size="12"
-        font-family="monospace"
-        font-weight="bold"
-        letter-spacing="3"
-      >
-        📂 OBJECTS
-      </text>
-      <line
-        x1="30"
-        y1="65"
-        x2="390"
-        y2="65"
-        stroke="#ffffff15"
-        stroke-width="1"
-      />
-
-      <text
-        x="30"
-        y="100"
-        fill="#ffffff"
-        font-size="24"
-        font-family="'Segoe UI',sans-serif"
-        font-weight="bold"
-      >
-        Obiekt — typ inline
-      </text>
-
-      <text
-        x="30"
-        y="132"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Kształt obiektu definiujesz bezpośrednio
-      </text>
-      <text
-        x="30"
-        y="152"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        przy zmiennej. Każda właściwość ma typ.
-      </text>
-      <text
-        x="30"
-        y="172"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        "admin" to literal type — TYLKO ta wartość.
-      </text>
-      <text
-        x="30"
-        y="192"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        [1|5] to tuple — jeden element: 1 lub 5.
-      </text>
-
-      <rect
-        x="20"
-        y="215"
-        width="380"
-        height="390"
-        rx="12"
-        fill="#0a0a1a"
-        stroke="#ffffff10"
-        stroke-width="1"
-      />
-
-      <text
-        x="40"
-        y="248"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Twój przykład (poprawione):
-      </text>
-      <text
-        x="40"
-        y="273"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">user</tspan>
-        : {
-      </text>
-      <text
-        x="40"
-        y="298"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        name:
-        <tspan fill="#4ec9b0">string</tspan>
-        ;
-      </text>
-      <text
-        x="40"
-        y="323"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        age:
-        <tspan fill="#4ec9b0">number</tspan>
-        |
-        <tspan fill="#4ec9b0">string</tspan>
-        ;
-      </text>
-      <text
-        x="40"
-        y="348"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        hobbies:
-        <tspan fill="#4ec9b0">string</tspan>
-        [];
-      </text>
-      <text
-        x="40"
-        y="373"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        role: {
-      </text>
-      <text
-        x="40"
-        y="398"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        description:
-        <tspan fill="#ce9178">"admin"</tspan>
-        ;
-      </text>
-      <text
-        x="40"
-        y="418"
-        fill="#6a9955"
-        font-size="12"
-        font-family="'Courier New',monospace"
-      >
-        <tspan fill="#6a9955">// ↑ literal type! Tylko "admin"</tspan>
-      </text>
-      <text
-        x="40"
-        y="443"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        id: [
-        <tspan fill="#b5cea8">1</tspan>
-        |
-        <tspan fill="#b5cea8">5</tspan>
-        ];
-      </text>
-      <text
-        x="40"
-        y="463"
-        fill="#6a9955"
-        font-size="12"
-        font-family="'Courier New',monospace"
-      >
-        <tspan fill="#6a9955">// ↑ tuple: 1 element = 1 lub 5</tspan>
-      </text>
-      <text
-        x="40"
-        y="488"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        };
-      </text>
-      <text
-        x="40"
-        y="513"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        } = {
-      </text>
-      <text
-        x="40"
-        y="538"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        name:
-        <tspan fill="#ce9178">"Marek"</tspan>
-        , age:
-        <tspan fill="#b5cea8">20</tspan>
-        ,
-      </text>
-      <text
-        x="40"
-        y="563"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        hobbies: [
-        <tspan fill="#ce9178">"Sports"</tspan>
-        ,
-        <tspan fill="#ce9178">"Cooking"</tspan>
-        ],
-      </text>
-      <text
-        x="40"
-        y="588"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        role: {description:
-        <tspan fill="#ce9178">"admin"</tspan>
-        ,id:[
-        <tspan fill="#b5cea8">1</tspan>
-        ]}
-      </text>
-      <text
-        x="40"
-        y="600"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        };
-      </text>
-
-      <rect
-        x="20"
-        y="635"
-        width="380"
-        height="55"
-        rx="10"
-        fill="#667eea15"
-        stroke="#667eea30"
-        stroke-width="1"
-      />
-      <text
-        x="40"
-        y="658"
-        fill="#667eea"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        💡 Przy złożonych obiektach użyj type alias
-      </text>
-      <text
-        x="40"
-        y="678"
-        fill="#667eea"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        ⚠️ rore → role (literówka w oryginale)
-      </text>
-
-      <text
-        x="350"
-        y="712"
-        fill="#ffffff20"
-        font-size="11"
-        font-family="monospace"
-      >
-        07 / 11
-      </text>
-    </svg>
-
-    <!-- ============================================ -->
-    <!-- CARD 08: TYP {} — let val                     -->
-    <!-- ============================================ -->
-    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bg8" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color: #0c0c1d" />
-          <stop offset="50%" style="stop-color: #2a1a3e" />
-          <stop offset="100%" style="stop-color: #1a1030" />
-        </linearGradient>
-        <linearGradient id="accent8" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color: #ec4899" />
-          <stop offset="100%" style="stop-color: #f43f5e" />
-        </linearGradient>
-      </defs>
-      <rect width="420" height="620" rx="20" fill="url(#bg8)" />
-      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent8)" />
-
-      <text
-        x="30"
-        y="50"
-        fill="#ec4899"
-        font-size="12"
-        font-family="monospace"
-        font-weight="bold"
-        letter-spacing="3"
-      >
-        ⚠️ OBJECTS
-      </text>
-      <line
-        x1="30"
-        y1="65"
-        x2="390"
-        y2="65"
-        stroke="#ffffff15"
-        stroke-width="1"
-      />
-
-      <text
-        x="30"
-        y="100"
-        fill="#ffffff"
-        font-size="24"
-        font-family="'Segoe UI',sans-serif"
-        font-weight="bold"
-      >
-        Typ {}
-      </text>
-
-      <text
-        x="30"
-        y="132"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        To NIE jest "pusty obiekt"! Częste
-      </text>
-      <text
-        x="30"
-        y="152"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        nieporozumienie. Oznacza: dowolna wartość
-      </text>
-      <text
-        x="30"
-        y="172"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        OPRÓCZ null i undefined.
-      </text>
-      <text
-        x="30"
-        y="192"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Akceptuje stringi, numbery, boolean, tablice!
-      </text>
-
-      <rect
-        x="20"
-        y="215"
-        width="380"
-        height="290"
-        rx="12"
-        fill="#0a0a1a"
-        stroke="#ffffff10"
-        stroke-width="1"
-      />
-
-      <text
-        x="40"
-        y="248"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Twój przykład:
-      </text>
-      <text
-        x="40"
-        y="273"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">val</tspan>
-        : {} =
-        <tspan fill="#ce9178">"some text"</tspan>
-        ;
-        <tspan fill="#6a9955">// ✅</tspan>
-      </text>
-
-      <text
-        x="40"
-        y="308"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Wszystko to przejdzie:
-      </text>
-      <text
-        x="40"
-        y="333"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        val =
-        <tspan fill="#b5cea8">42</tspan>
-        ;
-        <tspan fill="#6a9955">// ✅ number</tspan>
-      </text>
-      <text
-        x="40"
-        y="358"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        val =
-        <tspan fill="#569cd6">true</tspan>
-        ;
-        <tspan fill="#6a9955">// ✅ boolean</tspan>
-      </text>
-      <text
-        x="40"
-        y="383"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        val = [
-        <tspan fill="#b5cea8">1</tspan>
-        ,
-        <tspan fill="#b5cea8">2</tspan>
-        ];
-        <tspan fill="#6a9955">// ✅ array</tspan>
-      </text>
-      <text
-        x="40"
-        y="408"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        val = {name:
-        <tspan fill="#ce9178">"A"</tspan>
-        };
-        <tspan fill="#6a9955">// ✅ obiekt</tspan>
-      </text>
-
-      <text
-        x="40"
-        y="443"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // TYLKO te nie przejdą:
-      </text>
-      <text
-        x="40"
-        y="468"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // val = null; ❌
-      </text>
-      <text
-        x="40"
-        y="493"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // val = undefined; ❌
-      </text>
-
-      <rect
-        x="20"
-        y="535"
-        width="380"
-        height="55"
-        rx="10"
-        fill="#ec489915"
-        stroke="#ec489930"
-        stroke-width="1"
-      />
-      <text
-        x="40"
-        y="558"
-        fill="#ec4899"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        💡 unknown → {} → object
-      </text>
-      <text
-        x="40"
-        y="578"
-        fill="#ec4899"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        (od najszerszego do najwęższego)
-      </text>
-
-      <text
-        x="350"
-        y="612"
-        fill="#ffffff20"
-        font-size="11"
-        font-family="monospace"
-      >
-        08 / 11
-      </text>
-    </svg>
-
-    <!-- ============================================ -->
-    <!-- CARD 09: RECORD — let data                    -->
-    <!-- ============================================ -->
-    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bg9" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color: #0c0c1d" />
-          <stop offset="50%" style="stop-color: #1e3a5f" />
-          <stop offset="100%" style="stop-color: #162447" />
-        </linearGradient>
-        <linearGradient id="accent9" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color: #0ea5e9" />
-          <stop offset="100%" style="stop-color: #06b6d4" />
-        </linearGradient>
-      </defs>
-      <rect width="420" height="620" rx="20" fill="url(#bg9)" />
-      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent9)" />
-
-      <text
-        x="30"
-        y="50"
-        fill="#06b6d4"
-        font-size="12"
-        font-family="monospace"
-        font-weight="bold"
-        letter-spacing="3"
-      >
-        📂 OBJECTS
-      </text>
-      <line
-        x1="30"
-        y1="65"
-        x2="390"
-        y2="65"
-        stroke="#ffffff15"
-        stroke-width="1"
-      />
-
-      <text
-        x="30"
-        y="100"
-        fill="#ffffff"
-        font-size="24"
-        font-family="'Segoe UI',sans-serif"
-        font-weight="bold"
-      >
-        Record&lt;K, V&gt;
-      </text>
-
-      <text
-        x="30"
-        y="132"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Definiuje typ obiektu, gdzie:
-      </text>
-      <text
-        x="30"
-        y="152"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        K (pierwszy parametr) = typ kluczy
-      </text>
-      <text
-        x="30"
-        y="172"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        V (drugi parametr) = typ wartości.
-      </text>
-      <text
-        x="30"
-        y="192"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Z union w kluczach wymusza WSZYSTKIE.
-      </text>
-
-      <rect
-        x="20"
-        y="215"
-        width="380"
-        height="290"
-        rx="12"
-        fill="#0a0a1a"
-        stroke="#ffffff10"
-        stroke-width="1"
-      />
-
-      <text
-        x="40"
-        y="248"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Twój przykład:
-      </text>
-      <text
-        x="40"
-        y="273"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">data</tspan>
-        :
-      </text>
-      <text
-        x="40"
-        y="298"
-        fill="#4ec9b0"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        Record&lt;
-        <tspan fill="#4ec9b0">string</tspan>
-        ,
-        <tspan fill="#4ec9b0">number</tspan>
-        |
-        <tspan fill="#4ec9b0">string</tspan>
-        &gt;
-      </text>
-      <text
-        x="40"
-        y="323"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        = { name:
-        <tspan fill="#ce9178">"Marek"</tspan>
-        , age:
-        <tspan fill="#b5cea8">20</tspan>
-        };
-      </text>
-
-      <text
-        x="40"
-        y="363"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Z union w kluczach — WYMUSZA:
-      </text>
-      <text
-        x="40"
-        y="388"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        type
-        <tspan fill="#4ec9b0">Fruit</tspan>
-        =
-        <tspan fill="#ce9178">"apple"</tspan>
-        |
-        <tspan fill="#ce9178">"banana"</tspan>
-        ;
-      </text>
-      <text
-        x="40"
-        y="418"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">p</tspan>
-        :
-        <tspan fill="#4ec9b0">Record</tspan>
-        &lt;
-        <tspan fill="#4ec9b0">Fruit</tspan>
-        ,
-        <tspan fill="#4ec9b0">number</tspan>
-        &gt; = {
-      </text>
-      <text
-        x="40"
-        y="443"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        apple:
-        <tspan fill="#b5cea8">2.5</tspan>
-        ,
-      </text>
-      <text
-        x="40"
-        y="468"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        banana:
-        <tspan fill="#b5cea8">1.5</tspan>
-        <tspan fill="#6a9955">// oba WYMAGANE!</tspan>
-      </text>
-      <text
-        x="40"
-        y="493"
-        fill="#c586c0"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        };
-      </text>
-
-      <rect
-        x="20"
-        y="535"
-        width="380"
-        height="55"
-        rx="10"
-        fill="#06b6d415"
-        stroke="#06b6d430"
-        stroke-width="1"
-      />
-      <text
-        x="40"
-        y="558"
-        fill="#06b6d4"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        💡 Record&lt;K,V&gt; === { [key: K]: V }
-      </text>
-      <text
-        x="40"
-        y="578"
-        fill="#06b6d4"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Klucze mogą być string, number lub union
-      </text>
-
-      <text
-        x="350"
-        y="612"
-        fill="#ffffff20"
-        font-size="11"
-        font-family="monospace"
-      >
-        09 / 11
-      </text>
-    </svg>
-
-    <!-- ============================================ -->
-    <!-- CARD 10: ENUM — enum Role                     -->
-    <!-- ============================================ -->
-    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bg10" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color: #1a0f0a" />
-          <stop offset="50%" style="stop-color: #5c2e0e" />
-          <stop offset="100%" style="stop-color: #3d1f0a" />
-        </linearGradient>
-        <linearGradient id="accent10" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color: #f59e0b" />
-          <stop offset="100%" style="stop-color: #ef4444" />
-        </linearGradient>
-      </defs>
-      <rect width="420" height="620" rx="20" fill="url(#bg10)" />
-      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent10)" />
-
-      <text
-        x="30"
-        y="50"
-        fill="#f59e0b"
-        font-size="12"
-        font-family="monospace"
-        font-weight="bold"
-        letter-spacing="3"
-      >
-        📂 ENUMS
-      </text>
-      <line
-        x1="30"
-        y1="65"
-        x2="390"
-        y2="65"
-        stroke="#ffffff15"
-        stroke-width="1"
-      />
-
-      <text
-        x="30"
-        y="100"
-        fill="#ffffff"
-        font-size="24"
-        font-family="'Segoe UI',sans-serif"
-        font-weight="bold"
-      >
-        Enum (Wyliczenie)
-      </text>
-
-      <text
-        x="30"
-        y="132"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Zbiór nazwanych stałych. Numeric enum:
-      </text>
-      <text
-        x="30"
-        y="152"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        wartości od 0 w górę (domyślnie).
-      </text>
-      <text
-        x="30"
-        y="172"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        SŁABOŚĆ: akceptuje DOWOLNY number!
-      </text>
-      <text
-        x="30"
-        y="192"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        String enum jest bezpieczniejszy.
-      </text>
-
-      <rect
-        x="20"
-        y="215"
-        width="380"
-        height="290"
-        rx="12"
-        fill="#0a0a1a"
-        stroke="#ffffff10"
-        stroke-width="1"
-      />
-
-      <text
-        x="40"
-        y="248"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Twój przykład — numeric enum:
-      </text>
-      <text
-        x="40"
-        y="273"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        enum
-        <tspan fill="#4ec9b0">Role</tspan>
-        {
-      </text>
-      <text
-        x="40"
-        y="298"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        ADMIN,
-        <tspan fill="#6a9955">// 0</tspan>
-      </text>
-      <text
-        x="40"
-        y="323"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        READ_ONLY,
-        <tspan fill="#6a9955">// 1</tspan>
-      </text>
-      <text
-        x="40"
-        y="348"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        AUTHOR,
-        <tspan fill="#6a9955">// 2</tspan>
-      </text>
-      <text
-        x="40"
-        y="373"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        }
-      </text>
-
-      <text
-        x="40"
-        y="408"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">userRole</tspan>
-        :
-        <tspan fill="#4ec9b0">Role</tspan>
-      </text>
-      <text
-        x="40"
-        y="433"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        = Role.ADMIN;
-        <tspan fill="#6a9955">// ✅ = 0</tspan>
-      </text>
-      <text
-        x="40"
-        y="463"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">userRole2</tspan>
-        :
-        <tspan fill="#4ec9b0">Role</tspan>
-      </text>
-      <text
-        x="40"
-        y="488"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        =
-        <tspan fill="#b5cea8">1</tspan>
-        ;
-        <tspan fill="#6a9955">// ✅ READ_ONLY</tspan>
-      </text>
-
-      <rect
-        x="20"
-        y="535"
-        width="380"
-        height="55"
-        rx="10"
-        fill="#f59e0b15"
-        stroke="#f59e0b30"
-        stroke-width="1"
-      />
-      <text
-        x="40"
-        y="558"
-        fill="#f59e0b"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        ⚠️ let r: Role = 999 — TS nie zgłosi błędu!
-      </text>
-      <text
-        x="40"
-        y="578"
-        fill="#f59e0b"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        💡 Preferuj string enum lub literal union
-      </text>
-
-      <text
-        x="350"
-        y="612"
-        fill="#ffffff20"
-        font-size="11"
-        font-family="monospace"
-      >
-        10 / 11
-      </text>
-    </svg>
-
-    <!-- ============================================ -->
-    <!-- CARD 11: LITERAL TYPES — let usRole           -->
-    <!-- ============================================ -->
-    <svg width="420" height="620" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bg11" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color: #0a1a0a" />
-          <stop offset="50%" style="stop-color: #1a4a1a" />
-          <stop offset="100%" style="stop-color: #0d370d" />
-        </linearGradient>
-        <linearGradient id="accent11" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color: #22c55e" />
-          <stop offset="100%" style="stop-color: #10b981" />
-        </linearGradient>
-      </defs>
-      <rect width="420" height="620" rx="20" fill="url(#bg11)" />
-      <rect x="0" y="0" width="420" height="8" rx="4" fill="url(#accent11)" />
-
-      <text
-        x="30"
-        y="50"
-        fill="#22c55e"
-        font-size="12"
-        font-family="monospace"
-        font-weight="bold"
-        letter-spacing="3"
-      >
-        📂 TYPESCRIPT TYPES
-      </text>
-      <line
-        x1="30"
-        y1="65"
-        x2="390"
-        y2="65"
-        stroke="#ffffff15"
-        stroke-width="1"
-      />
-
-      <text
-        x="30"
-        y="100"
-        fill="#ffffff"
-        font-size="24"
-        font-family="'Segoe UI',sans-serif"
-        font-weight="bold"
-      >
-        Literal Types
-      </text>
-
-      <text
-        x="30"
-        y="132"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Typ, który akceptuje DOKŁADNIE określone
-      </text>
-      <text
-        x="30"
-        y="152"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        wartości — konkretne stringi, numbery
-      </text>
-      <text
-        x="30"
-        y="172"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        lub booleany. Nie generuje kodu JS.
-      </text>
-      <text
-        x="30"
-        y="192"
-        fill="#a0a0b8"
-        font-size="13"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Lżejszy i preferowany nad enum.
-      </text>
-
-      <rect
-        x="20"
-        y="215"
-        width="380"
-        height="290"
-        rx="12"
-        fill="#0a0a1a"
-        stroke="#ffffff10"
-        stroke-width="1"
-      />
-
-      <text
-        x="40"
-        y="248"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Twój przykład:
-      </text>
-      <text
-        x="40"
-        y="273"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        let
-        <tspan fill="#9cdcfe">usRole</tspan>
-        :
-      </text>
-      <text
-        x="40"
-        y="298"
-        fill="#ce9178"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        "ADMIN" | "READ_ONLY" | "AUTHOR"
-      </text>
-      <text
-        x="40"
-        y="323"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        =
-        <tspan fill="#ce9178">"ADMIN"</tspan>
-        ;
-        <tspan fill="#6a9955">// ✅</tspan>
-      </text>
-
-      <text
-        x="40"
-        y="358"
-        fill="#9cdcfe"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        usRole =
-        <tspan fill="#ce9178">"READ_ONLY"</tspan>
-        ;
-        <tspan fill="#6a9955">// ✅</tspan>
-      </text>
-      <text
-        x="40"
-        y="383"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // usRole = "SUPER"; ❌
-      </text>
-      <text
-        x="40"
-        y="408"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // usRole = 0; ❌
-      </text>
-
-      <text
-        x="40"
-        y="443"
-        fill="#6a9955"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        // Lepiej z type alias:
-      </text>
-      <text
-        x="40"
-        y="468"
-        fill="#569cd6"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        type
-        <tspan fill="#4ec9b0">Role</tspan>
-        =
-      </text>
-      <text
-        x="40"
-        y="493"
-        fill="#ce9178"
-        font-size="13"
-        font-family="'Courier New',monospace"
-      >
-        "ADMIN" | "READ_ONLY" | "AUTHOR";
-      </text>
-
-      <rect
-        x="20"
-        y="535"
-        width="380"
-        height="55"
-        rx="10"
-        fill="#22c55e15"
-        stroke="#22c55e30"
-        stroke-width="1"
-      />
-      <text
-        x="40"
-        y="558"
-        fill="#22c55e"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        💡 Zero kodu JS — lżejszy niż enum.
-      </text>
-      <text
-        x="40"
-        y="578"
-        fill="#22c55e"
-        font-size="12"
-        font-family="'Segoe UI',sans-serif"
-      >
-        Enum → gdy potrzebujesz Object.values()
-      </text>
-
-      <text
-        x="350"
-        y="612"
-        fill="#ffffff20"
-        font-size="11"
-        font-family="monospace"
-      >
-        11 / 11
-      </text>
-    </svg>
+      });
+
+      document
+        .getElementById("importModal")
+        .addEventListener("click", function (e) {
+          if (e.target === e.currentTarget) closeImportModal();
+        });
+
+      // =============================================
+      // START
+      // =============================================
+
+      init();
+    </script>
   </body>
 </html>
