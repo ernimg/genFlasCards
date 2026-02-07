@@ -540,7 +540,7 @@
               <label>Opis (każda linia = nowy wiersz, max 4)</label>
               <textarea
                 id="fieldDesc"
-                rows="4"
+                rows="20"
                 placeholder="Linia 1 opisu&#10;Linia 2 opisu&#10;Linia 3 opisu&#10;Linia 4 opisu"
                 oninput="onFieldChange()"
               ></textarea>
@@ -1038,9 +1038,9 @@
           }) || THEMES[0];
         var totalCards = cards.length;
 
-        var descLines = (card.desc || []).slice(0, 4);
+        var descLines = (card.desc || []).slice(0, 20);
         var codeLines = card.code || [];
-        var tipLines = (card.tip || []).slice(0, 2);
+        var tipLines = (card.tip || []).slice(0, 10);
 
         var descHeight = descLines.length * 20;
         var codeHeight = Math.max(codeLines.length * 22 + 40, 80);
